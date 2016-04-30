@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Master of Legends</title>
+		<script   src="https://code.jquery.com/jquery-1.12.3.min.js"   integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ="   crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+		<link rel="stylesheet" href="css/style.css">
+	</head>
+
+	<body>
+		<!-- navigation bar -->
+		<nav class="navbar navbar-default">
+			<div  id="navbarContainer" class="container">
+				<div class="navbar-header">
+				<a class="navbar-brand" href="index.html">Master Of Legends</a>
+				</div>
+			<ul class="nav navbar-nav">
+				<li><a class="activeNavbarItem" href="index.html">Home</a></li>
+				<li><a href="summoner.html">Summoner</a></li>
+				<li><a href="regions.html">Regions</a></li>
+				<li><a href="teambuilder.html">Team Builder</a></li>
+				<li class="active"><a href="about.html">About</a></li> 
+			</ul>
+			</div>
+		</nav>
+		<div id="divBgImage">
+			<img style="z-index:-2" id="bgImage"></img>
+			<img style="z-index:-1" id="bgOverlay" src="img/blueBackgroundOverlay.png"></img>
+		</div>
+
+		<!-- Content Container -->
+		<div id="masterContainer" class="container">
+			<div id="outerContainer" class="row">
+				<div id="innerContainer" class="aboutPageContent" class="col-sm-12">
+					<h2><p><b>Overview</b></h2>
+					<p><b>Master of Legends</b> is a Client-Side-Only Web Application created for <a href="https://developer.riotgames.com/discussion/announcements/show/eoq3tZd1">The Riot Games API Challenge 2016</a>.
+					<p>The goal of this application is visualize and analyze <b>Champion Mastery</b> and related data in the following ways:
+					<div class="aboutPageList">
+						<ul style="list-style-type:circle">
+						  <li>Sem</li>
+						  <li>Spoilers</li>
+						  <li>Ainda</li>
+						</ul>
+					</div>
+					<p>Explain each tab
+					<h2><p><b>Librarys</b></h2>
+					<P>The external librarys that I used here are:	
+					<ul style="list-style-type:circle">
+						<li><a href="https://jquery.com/">jQuery</a></li>
+						<li><a href="http://getbootstrap.com/">Bootstrap</a></li>
+						<li><a href="http://fortawesome.github.io/Font-Awesome/">Font-Awesome</a></li>
+					</ul>
+
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		var page='about';
+	</script>
+	<script src="js/cookie.js"></script>
+	<script src="js/RiotAPICommunicationModule.js"></script>
+	<script src="js/DynamicStyle.js"></script>
+	<script src="js/MainController.js"></script>
+	</body>
+</html>

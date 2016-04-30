@@ -1,0 +1,134 @@
+#navbarContainer .activeNavbarItem{
+	/*Tamanho da navbar 
+	height: 75px;
+	*/
+}
+.navbar{
+	margin-bottom: 0px;
+}
+
+#divBgImage{
+	width: 100%;
+}
+#bgImage{
+    width: inherit;
+    position: absolute;
+}
+#bgOverlay{
+	width: inherit;
+	position: absolute;
+}
+
+#masterContainer{
+
+}
+
+#outerContainer{
+	background-color: #313745;
+	color:white;
+	height: auto;
+	min-height: 500px;
+	border-radius: 2px;
+	border: 1px solid #e7e7e7;
+}
+
+#innerContainer{
+	text-align: left;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+#divFormSearchSummoner{
+	padding-top: 20px;
+	padding-left: 50px;
+	padding-right: 50px;
+}
+
+#summonerInputText{
+	background-color:#E7E7E7;
+	text-align: center;
+}
+#divFormSearchSummoner{
+    font-size: 20px;
+    color: #337AB7;
+}
+
+#divContentIndex{
+	position:fixed;
+	width: 500px;
+	min-height: 200px;
+	top:calc(50% - 100px);
+	bottom:calc(50% - 100px);
+	right:calc(50% - 250px);
+	left:calc(50% - 250px);
+	border-style: solid;
+	border-radius: 15px;
+    border-width: 2px;
+	border-color:black;
+	box-shadow: 10px 10px 5px black;
+	z-index:10;
+	display:flex;
+	justify-content:space-around;
+}
+
+#divSearchSummoner{
+	background-color: white;
+	width: inherit;
+	height: inherit;
+	border-radius: 15px;
+	text-align: center;
+	opacity: 1.0;
+}
+
+.nav.navbar-nav li a {
+	color: #337AB7;
+}
+#navbarContainer .activeNavbarItem {
+	color: #337AB7;
+}
+.navbar-default .navbar-brand {
+	color: #337AB7;
+}
+
+body{
+	background-color: #01429C;
+}
+
+p{
+	margin-left: 20px;
+}
+
+.btn-group>.btn:not(:first-child):not(:last-child):not(.dropdown-toggle), .btn-group>.btn:first-child, .btn-group>.btn:last-child {
+    font-size: 12px;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.alert{
+	text-align: center;
+	display: none;
+}
+
+#summonerOverview{
+	text-align: center;
+	width:100%;
+}
+
+#summonerIcon{
+	width: 100px;
+	height: 100px;
+	border-radius:10px;
+	border: 1px solid gray;
+}
+
+#summonerName{
+	font-size:24px;
+}
+#summonerRegion{
+	font-size: 24px;
+	font-style:italic;
+	color: gray;
+}
+#summonerLevel{
+	font-size:15px;
+	font-color:white;
+}

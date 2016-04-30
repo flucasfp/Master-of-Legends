@@ -1,0 +1,2 @@
+{"key": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",	 
+"loadKeyFromFile":false}

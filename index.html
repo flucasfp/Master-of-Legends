@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Master of Legends</title>
+		<script   src="https://code.jquery.com/jquery-1.12.3.min.js"   integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ="   crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+		<link rel="stylesheet" href="css/style.css">
+	</head>
+
+	<body>
+		<!-- navigation bar -->
+		<nav class="navbar navbar-default">
+			<div  id="navbarContainer" class="container">
+				<div class="navbar-header">
+				<a class="navbar-brand" href="index.html">Master Of Legends</a>
+				</div>
+			<ul class="nav navbar-nav">
+				<li class="active"><a class="activeNavbarItem" href="index.html">Home</a></li>
+				<li><a href="summoner.html">Summoner</a></li>
+				<li><a href="regions.html">Regions</a></li>
+				<li><a href="teambuilder.html">Team Builder</a></li>
+				<li><a href="about.html">About</a></li> 
+			</ul>
+			</div>
+		</nav>
+		<div id="divBgImage">
+			<img style="z-index:-2" id="bgImage"></img>
+			<img style="z-index:-1" id="bgOverlay" src="img/blueBackgroundOverlay.png"></img>
+		</div>
+
+		<!-- Content Container -->
+		<div class="alert alert-info">
+  			<strong>Oops!!</strong> You entered an invalid Summoner's name...<br>...or maybe the Summoner is hidden inside a bush.
+		</div>
+		<div id="divContentIndex">
+			<div id="divSearchSummoner">
+				<div id="divFormSearchSummoner">					
+					<form id="seachSummonerForm" action="summoner.html">
+						<div id="divFormGroupSearchSummoner" class="form-group">
+						<label for="summonerInputText">Enter a Summoner's name</label>
+						<input type="text" class="form-control" id="summonerInputText" name="summoner">
+						<!--botoes das regiões-->
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-default active"><input type="radio" value="br" name="selectSummonerRegion" id="regionOption1" autocomplete="off" checked>BR</label>
+							<label class="btn btn-default"><input type="radio" value="eune" name="selectSummonerRegion" id="regionOption2" autocomplete="off">EUNE</label>
+							<label class="btn btn-default"><input type="radio" value="euw" name="selectSummonerRegion" id="regionOption3" autocomplete="off">EUW</label>
+							<label class="btn btn-default"><input type="radio" value="jp" name="selectSummonerRegion" id="regionOption4" autocomplete="off">JP</label>
+							<label class="btn btn-default"><input type="radio" value="kr" name="selectSummonerRegion" id="regionOption5" autocomplete="off">KR</label>
+							<label class="btn btn-default"><input type="radio" value="lan" name="selectSummonerRegion" id="regionOption6" autocomplete="off">LAN</label>
+							<label class="btn btn-default"><input type="radio" value="las" name="selectSummonerRegion" id="regionOption7" autocomplete="off">LAS</label>
+							<label class="btn btn-default"><input type="radio" value="na" name="selectSummonerRegion" id="regionOption8" autocomplete="off">NA</label>
+							<label class="btn btn-default"><input type="radio" value="oce" name="selectSummonerRegion" id="regionOption9" autocomplete="off">OCE</label>
+							<label class="btn btn-default"><input type="radio" value="ru" name="selectSummonerRegion" id="regionOption10" autocomplete="off">RU</label>
+							<label class="btn btn-default"><input type="radio" value="tr" name="selectSummonerRegion" id="regionOption11" autocomplete="off">TR</label>
+						</div>
+					   	</div>					  
+						<button type="submit" id="buttonSearchSummoner" class="btn btn-primary" value="Submit"><span></span></button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script>
+		var page='index';
+	</script>
+	<script src="js/cookie.js"></script>
+	<script src="js/LocationSearcher.js"></script>
+	<script src="js/RiotAPICommunicationModule.js"></script>
+	<script src="js/DynamicStyle.js"></script>
+	<script src="js/MainController.js"></script>
+</html>
