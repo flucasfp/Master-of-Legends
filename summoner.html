@@ -7,6 +7,7 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.0.0/Chart.js"></script>
 		<link rel="stylesheet" href="css/style.css">
 	</head>
 
@@ -40,22 +41,53 @@
 						<div id="summonerInformation">
 							<span id="summonerName"></span><span id="summonerRegion"></span><br>
 							<span id="summonerLevel"></span>
-
 						</div>
-						<hr>
+					</div>	
+					<hr>
+					<div id="masteryInfoLabel">
+						<h2>Champion Mastery Information:</h2>
 					</div>
 					
+
+					<div class="panel panel-default">
+						<div class="panel-heading panel-hidden" role="tab" id="showAllChampionsDiv">
+					  	<h4 class="panel-title">
+					  		<div class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseChampions" aria-expanded="false" aria-controls="collapseChampions">
+					      		Show all champions
+					      	</div>
+					    	</h4>
+						</div>
+						<div id="collapseChampions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="showAllChampionsDiv">
+							<ul class="nav nav-tabs">
+							  <li class="active"><a data-toggle="tab" href="#allChampionsMenu1">List</a></li>
+							  <li><a data-toggle="tab" href="#allChampionsMenu2">Graphic</a></li>
+							</ul>
+							<div class="tab-content">
+							  <div id="allChampionsMenu1" class="tab-pane fade in active">
+							    <div id="allChampionsList" class="panel-body">
+								</div>
+							</div>
+							<div id="allChampionsMenu2" class="tab-pane fade">
+								<div id="allChampionsGraph" class="panel-body">
+
+								</div>
+							</div>
+							</div>	
+						</div>
+					</div>
+
+
 				</div>
 			</div>
 		</div>
 	</body>
 	<script>var page = 'summoner';</script>
+	<script src="js/crossfilter.min.js"></script>
 	<script src="js/cookie.js"></script>
 	<script src="js/LocationSearcher.js"></script>
-	<script src="js/RiotAPICommunicationModule.js"></script>
+	<script src="js/serverCommunication.js"></script>
 	<script src="js/DynamicStyle.js"></script>
 	<script src="js/Summoner.js"></script>
 	<script src="js/MainController.js"></script>
-
 	</body>
 </html>

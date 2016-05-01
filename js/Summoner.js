@@ -19,20 +19,26 @@ var summonerModule=(function(){
 		}
 	}
 
-	function loadPage(){
-		loadSummonerOverview();
+	function loadMasteryAndMatchesInformation(){
+		serverCommunication.getMasteryAndMatches(this.summonerInfo[this.accessKeySummonerInfo].id,this.summonerInfo.region,function(data){console.log(data)},function(data){console.log(data)});
+
 	}
 
+	function loadPage(){
+		loadSummonerOverview();
+		loadMasteryAndMatchesInformation();
+	}
+	
 	function checkSummonerInfoResponse(queryData){
-		if(queryData=="error"){
+		if(queryData=='error'){
 			//if summoner doesnt exist, redirect to index
 			window.location.assign("index.html?error=summonerNotFound");
 		}else{
 			this.summonerInfo = queryData;
 			this.accessKeySummonerInfo = Object.keys(queryData)[0];
 			//now let's get League info about the summoner
-			RiotAPICommunicationModule.getSummonerLeague(this.summonerInfo[this.accessKeySummonerInfo].id,this.summonerInfo.region,checkSummonerLeagueResponse);
-			//the function loadPage will be called inside checkSummonerLeagueResponde 
+			serverCommunication.getSummonerLeague(this.summonerInfo[this.accessKeySummonerInfo].id,this.summonerInfo.region,checkSummonerLeagueResponse);
+			//the function loadPage will be called inside checkSummonerLeagueResponde
 		};
 	}
 	function checkSummonerLeagueResponse(queryData){
@@ -40,7 +46,6 @@ var summonerModule=(function(){
 			summonerLeague['leagueNotFound'] = true;
 		}else{
 			summonerLeague = queryData;
-			console.log(queryData);
 		}
 		loadPage();
 	}
@@ -66,7 +71,7 @@ var summonerModule=(function(){
 			}
 		}
 		
-		RiotAPICommunicationModule.getSummonerInfo(searchNameNoSpaces,ls['selectSummonerRegion'],checkSummonerInfoResponse);
+		serverCommunication.getSummonerInfo(searchNameNoSpaces,ls['selectSummonerRegion'],checkSummonerInfoResponse);
 	}
 
     //public vars/methods:

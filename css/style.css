@@ -122,6 +122,7 @@ p{
 
 #summonerName{
 	font-size:24px;
+	color:#337AB7;
 }
 #summonerRegion{
 	font-size: 24px;
@@ -131,4 +132,47 @@ p{
 #summonerLevel{
 	font-size:15px;
 	font-color:white;
+}
+
+#showAllChampionsDiv{
+	width:100%;
+	font-size:18px;
+	color:white;
+}
+#showAllChampionsDiv:hover{
+	cursor: pointer;
+}
+
+#allChampionsList, #allChampionsGraph{
+	background-color: #313743;
+	color:white;
+}
+.panel-showed{
+	background-color:#313743;
+}     
+.panel-hidden{
+	background-color:#337AB7;
+}
+.nav-tabs{
+	background-color:#313743;
+}
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+    color: black;
+    cursor: default;
+    //background-color: #e7e7e7;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+}
+.nav>li>a:hover{
+	color:black;
+}
+
+.nav-tabs>li>a {
+    color: white;
+    border: 1px solid transparent;
+    border-radius: 4px 4px 0 0;
+}
+
+#masteryInfoLabel{
+	text-align: center;
 }
