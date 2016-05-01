@@ -2,7 +2,9 @@ var summonerModule=(function(){
 
 	var summonerInfo = {};
 	var summonerLeague = {"leagueNotFound":false};
-	var accessKeySummonerInfo = ""; //string that stores the master Object Property of the response
+	var accessKeySummonerInfo = ""; //string that stores the master Object Property of the response, ex: "lukehawk"
+	var summonerMastery = {};
+	var summonerMatches = {};
 
 	function loadSummonerOverview(){
 		//show summonerIcon	
@@ -20,13 +22,43 @@ var summonerModule=(function(){
 	}
 
 	function loadMasteryAndMatchesInformation(){
-		serverCommunication.getMasteryAndMatches(this.summonerInfo[this.accessKeySummonerInfo].id,this.summonerInfo.region,function(data){console.log(data)},function(data){console.log(data)});
+		serverCommunication.getMasteryAndMatches(this.summonerInfo[this.accessKeySummonerInfo].id,this.summonerInfo.region,checkSummonerMasteryandMasteryResponse);
 
 	}
 
 	function loadPage(){
 		loadSummonerOverview();
 		loadMasteryAndMatchesInformation();
+	}
+
+	function getHighestGrade(championSummonerMastery){
+		if(Object.keys(championSummonerMastery).indexOf('highestGrade')!=-1){
+			return championSummonerMastery.highestGrade;
+		}else{
+			return "-";
+		}
+	}
+
+	function showSummonerMasteryList(){
+		var targetDiv = "";
+		for(var i=0;i<this.summonerMastery.length;i++){
+			targetDiv = "#championLevelGroup"+this.summonerMastery[i].championLevel;
+			$(targetDiv).show();
+			$(targetDiv).append(championModule.createChampionListItemHTML(this.summonerMastery[i],getHighestGrade(this.summonerMastery[i])));
+
+		}
+		
+	}
+
+	function showSummonerMasteryChart(){
+
+	}
+
+	function checkSummonerMasteryandMasteryResponse(mastery, matches){
+		this.summonerMastery = mastery;
+		this.summonerMatches = matches;
+		showSummonerMasteryList();
+		showSummonerMasteryChart();
 	}
 	
 	function checkSummonerInfoResponse(queryData){

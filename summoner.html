@@ -35,7 +35,7 @@
 		<!-- Content Container -->
 		<div id="masterContainer" class="container">
 			<div id="outerContainer" class="row">
-				<div id="innerContainer" class="col-sm-12">
+				<div id="innerContainer" class="col-sm-12">			
 					<div id="summonerOverview">
 						<img id="summonerIcon"></img><br>
 						<div id="summonerInformation">
@@ -47,7 +47,16 @@
 					<div id="masteryInfoLabel">
 						<h2>Champion Mastery Information:</h2>
 					</div>
-					
+					<div class="row">
+						<div class="col-sm-6">
+							TESTE
+						</div>
+						<div class="col-sm-6">
+							TESTE
+						</div>
+					</div>
+					<br>
+
 
 					<div class="panel panel-default">
 						<div class="panel-heading panel-hidden" role="tab" id="showAllChampionsDiv">
@@ -60,11 +69,40 @@
 						<div id="collapseChampions" class="panel-collapse collapse" role="tabpanel" aria-labelledby="showAllChampionsDiv">
 							<ul class="nav nav-tabs">
 							  <li class="active"><a data-toggle="tab" href="#allChampionsMenu1">List</a></li>
-							  <li><a data-toggle="tab" href="#allChampionsMenu2">Graphic</a></li>
+							  <li><a data-toggle="tab" href="#allChampionsMenu2">Chart</a></li>
 							</ul>
 							<div class="tab-content">
 							  <div id="allChampionsMenu1" class="tab-pane fade in active">
-							    <div id="allChampionsList" class="panel-body">
+							  	<div class="championListContainer">
+								    <div id="allChampionsList" class="panel-body">
+								    	<div class="row">
+								    		<div class="col-sm-12 championLevelGroup" id="championLevelGroup5">
+								    			<div class="labelLevelGroup">Level 5</div>
+								    		</div>
+								    	</div>
+								    	<div class="row">
+								    		<div class="col-sm-12 championLevelGroup" id="championLevelGroup4">
+								    			<div class="labelLevelGroup">Level 4</div>
+								    				
+								    		</div>
+								    	</div>
+								    	<div class="row">
+								    		<div class="col-sm-12 championLevelGroup" id="championLevelGroup3">
+								    			<div class="labelLevelGroup">Level 3</div>
+								    				
+								    		</div>
+								    	</div>
+								    	<div class="row">
+								    		<div class="col-sm-12 championLevelGroup" id="championLevelGroup2">
+								    			<div class="labelLevelGroup">Level 2</div>								    				
+								    		</div>
+								    	</div>
+								    	<div class="row">
+							    			<div class="col-sm-12 championLevelGroup" id="championLevelGroup1">
+							    				<div class="labelLevelGroup">Level 1</div>							    				
+							    			</div>
+								    	</div>
+									</div>
 								</div>
 							</div>
 							<div id="allChampionsMenu2" class="tab-pane fade">
@@ -75,13 +113,12 @@
 							</div>	
 						</div>
 					</div>
-
-
 				</div>
 			</div>
 		</div>
 	</body>
 	<script>var page = 'summoner';</script>
+	<script src="js/Champion.js"></script>
 	<script src="js/crossfilter.min.js"></script>
 	<script src="js/cookie.js"></script>
 	<script src="js/LocationSearcher.js"></script>
