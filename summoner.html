@@ -53,7 +53,7 @@
 							<div id="topChampionsMasteryList"></div>
 						</div>
 						<div id="nextChestMasteryOverview" class="col-sm-6">
-							<div class="labelMasteryOverview">Top Champions with Chest Available:</div>
+							<div class="labelMasteryOverview">Top Champions with Available Chest:</div>
 							<div id="nextChestList"></div>
 						</div>
 					</div>
@@ -108,8 +108,10 @@
 								</div>
 							</div>
 							<div id="allChampionsMenu2" class="tab-pane fade">
-								<div id="allChampionsGraph" class="panel-body">
+								<div id="allChampionsChart" class="panel-body">
+									<div id="allChampionsChartContainer">
 
+									</div>
 								</div>
 							</div>
 							</div>	
@@ -121,6 +123,7 @@
 	</body>
 	<script>var page = 'summoner';</script>
 	<script src="js/Champion.js"></script>
+	<script src="js/ChartCreator.js"></script>
 	<script src="js/crossfilter.min.js"></script>
 	<script src="js/cookie.js"></script>
 	<script src="js/LocationSearcher.js"></script>

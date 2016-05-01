@@ -41,11 +41,21 @@ var summonerModule=(function(){
 
 	function showSummonerMasteryOverview(){
 		var countChampions = 0;
-		var maxShowed = 4;
+		var maxShowed = 3;
 		while(countChampions!=maxShowed && countChampions!=this.summonerMastery.length){
 			$("#topChampionsMasteryList").append(championModule.createChampionListItemHTML(this.summonerMastery[countChampions],getHighestGrade(this.summonerMastery[countChampions]),false));
 			countChampions++;
 		}
+
+		var countChampions = 0;
+		var currentChampion = 0;
+		while(countChampions!=maxShowed && currentChampion!=this.summonerMastery.length){
+			if(!this.summonerMastery[currentChampion].chestGranted){
+				$("#nextChestList").append(championModule.createChampionListItemHTML(this.summonerMastery[currentChampion],getHighestGrade(this.summonerMastery[currentChampion]),false));;
+				countChampions++;
+			}
+			currentChampion++;
+		}	
 	}
 
 	function showSummonerMasteryList(){
@@ -60,16 +70,7 @@ var summonerModule=(function(){
 	}
 
 	function showSummonerMasteryChart(){
-		var countChampions = 0;
-		var currentChampion = 0;
-		var maxShowed = 4;
-		while(countChampions!=maxShowed && currentChampion!=this.summonerMastery.length){
-			if(!this.summonerMastery[currentChampion].chestGranted){
-				$("#nextChestList").append(championModule.createChampionListItemHTML(this.summonerMastery[currentChampion],getHighestGrade(this.summonerMastery[currentChampion]),false));;
-				countChampions++;
-			}
-			currentChampion++;
-		}	
+		chartCreator.createOverviewChart("allChampionsChartContainer",this.summonerInfo[this.accessKeySummonerInfo].name,this.summonerMastery);
 	}
 
 	function checkSummonerMasteryandMasteryResponse(mastery, matches){

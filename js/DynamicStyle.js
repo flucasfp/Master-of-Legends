@@ -23,6 +23,10 @@ var dynamicStyleModule=(function(){
     	$(".panel-heading").css("background-color","#337AB7");
 	});
 
+	//fixing Highcharts width bug!
+	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+		$('#allChampionsChartContainer').highcharts().reflow();
+	});
     //public vars/methods:
     return{
 		loadNewBackground: loadNewBackground,
