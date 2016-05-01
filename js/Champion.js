@@ -14,14 +14,33 @@ var championModule=(function(){
 		return "";
 	}
 
-	function createChampionListItemHTML(summonerMastery,grade){
+	function getMasteryProgressInPercent(championPointsSinceLastLevel, championPointsUntilNextLevel){
+		//output is an float
+		if(championPointsSinceLastLevel==0){
+			return 1;
+		}
+		return (championPointsSinceLastLevel/(championPointsSinceLastLevel+championPointsUntilNextLevel));
+
+	}
+
+	function createChampionListItemHTML(summonerMastery,grade,showProgressBar){
 		var championID = summonerMastery.championId;
 		var championKey = getChampionKeyByID(championID);
 		var html = "<div class='championListItemDiv'><div class='imageList'><img class='championListImage' src='";
+		//img src:
 		html = html + getChampionSquareImgURL(championKey) + "'></img>";
-		html = html + "<div class='championListItemOverlay'>"+championModule.championsInfo.data[championKey].name+"<br>"+grade+"</div></div></div>";
+		//white hover overlay and champion info:
+		html = html + "<div class='championListItemOverlay'>"+championModule.championsInfo.data[championKey].name+"<br>"+grade+"</div></div>"
+		if(showProgressBar){
+			//progression bar
+			var progressPercent = parseInt(getMasteryProgressInPercent(summonerMastery.championPointsSinceLastLevel,summonerMastery.championPointsUntilNextLevel)*100);
+			html = html + "<div class='progress championMasteryProgress'><div class='progress-bar progress-bar-striped active' role='progressbar' aria-valuenow='"+progressPercent+"' aria-valuemin='0' aria-valuemax='100' style='width:"+progressPercent+"%'></div></div>";
+		}
+		//close div:
+		html = html + "</div>"
 		return html;
 	}
+	  
 
 
     //public vars/methods:

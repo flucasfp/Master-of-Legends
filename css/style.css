@@ -211,6 +211,17 @@ p{
 	text-align: center;
 	font-size:18px;
 }
+.labelMasteryOverview{
+	font-size: 18px;
+}
 .championLevelGroup{
 	display:none;
+}
+.progress{
+	margin-top:4px;
+	margin-bottom: 0px;
+	height:15px;	
+}
+.topChampionsMasteryOverview, .nextChestMasteryOverview{
+
 }

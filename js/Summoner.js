@@ -39,24 +39,43 @@ var summonerModule=(function(){
 		}
 	}
 
+	function showSummonerMasteryOverview(){
+		var countChampions = 0;
+		var maxShowed = 4;
+		while(countChampions!=maxShowed && countChampions!=this.summonerMastery.length){
+			$("#topChampionsMasteryList").append(championModule.createChampionListItemHTML(this.summonerMastery[countChampions],getHighestGrade(this.summonerMastery[countChampions]),false));
+			countChampions++;
+		}
+	}
+
 	function showSummonerMasteryList(){
 		var targetDiv = "";
 		for(var i=0;i<this.summonerMastery.length;i++){
 			targetDiv = "#championLevelGroup"+this.summonerMastery[i].championLevel;
 			$(targetDiv).show();
-			$(targetDiv).append(championModule.createChampionListItemHTML(this.summonerMastery[i],getHighestGrade(this.summonerMastery[i])));
+			$(targetDiv).append(championModule.createChampionListItemHTML(this.summonerMastery[i],getHighestGrade(this.summonerMastery[i]),true));
 
 		}
 		
 	}
 
 	function showSummonerMasteryChart(){
-
+		var countChampions = 0;
+		var currentChampion = 0;
+		var maxShowed = 4;
+		while(countChampions!=maxShowed && currentChampion!=this.summonerMastery.length){
+			if(!this.summonerMastery[currentChampion].chestGranted){
+				$("#nextChestList").append(championModule.createChampionListItemHTML(this.summonerMastery[currentChampion],getHighestGrade(this.summonerMastery[currentChampion]),false));;
+				countChampions++;
+			}
+			currentChampion++;
+		}	
 	}
 
 	function checkSummonerMasteryandMasteryResponse(mastery, matches){
 		this.summonerMastery = mastery;
 		this.summonerMatches = matches;
+		showSummonerMasteryOverview();
 		showSummonerMasteryList();
 		showSummonerMasteryChart();
 	}
