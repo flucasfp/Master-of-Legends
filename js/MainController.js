@@ -4,13 +4,6 @@ var mainController=(function(){
 
     //Load the api key:
 
-
-    function registerCookieKey(key){
-        Cookies("riot_api_key",key);        
-        RiotAPICommunicationModule.setRiotAPIKey(key);
-        notifyKeyLoaded();
-    }
-
 	function loadPage(){
         dynamicStyleModule.changeButtonSearchSummoner();//set random text in search button :D
    		dynamicStyleModule.loadNewBackground();//load a random skin splash as background
@@ -18,7 +11,7 @@ var mainController=(function(){
         if(ls['error']=="summonerNotFound"){
             $(".alert").css("display","inherit");
         }
-        
+
         //keep doind things, do not wait till loads
         if(page=='summoner'){ //page is a var declared in each html
             summonerModule.startPage();

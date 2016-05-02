@@ -56,7 +56,7 @@ def formatResponse(string):
 
 
 def getRiotAPIKey():
-    return "04f3bf38-d501-4a30-805c-a6387e6ffe58"
+    return "<key>"
 
 def sendRequestToRiot(url):
     command = "curl --request get '"+url+"'"

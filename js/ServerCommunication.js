@@ -34,7 +34,7 @@ var serverCommunication=(function(){
         
     };
 
-    function getMasteryAndMatches(summonerID, summonerRegion, callbackFunction1, callbackFunction2){
+    function getMasteryAndMatches(summonerID, summonerRegion, callbackFunction){
         //This gets Champions info too!
         $.when(
             $.ajax(serverURL+"getSummonerMastery=true&summonerID="+summonerID+"&summonerRegion="+summonerRegion),
@@ -42,10 +42,8 @@ var serverCommunication=(function(){
             $.ajax(serverURL+"getChampionsTagsInfo=true&summonerRegion="+summonerRegion)
         ).then(
             function(data1,data2,data3){
-                console.log(JSON.parse(data1[0]));
-                console.log(JSON.parse(data2[0]));
-                console.log(JSON.parse(data3[0]));
-
+                championModule.championsInfo = JSON.parse(data3[0]);
+                callbackFunction(JSON.parse(data1[0]),JSON.parse(data2[0]));                
             },
             function(data1,data2,data3){
                 console.log('Fail to load resources! :(');               
