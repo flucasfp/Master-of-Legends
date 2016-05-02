@@ -1,6 +1,8 @@
 var championModule=(function(){
 
-	var championsInfo = {}
+	var championsInfo = {};
+	var championRoles = ['Assassin','Fighter','Mage','Support','Tank','Marksman'];
+
 	function getChampionSquareImgURL(championKey){
 		return "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/champion/"+championKey+".png"
 	}
@@ -9,6 +11,15 @@ var championModule=(function(){
 		for(var i=0;i<Object.keys(championModule.championsInfo.data).length;i++){
 			if(championModule.championsInfo.data[Object.keys(championModule.championsInfo.data)[i]].id == championID){
 				return Object.keys(championModule.championsInfo.data)[i];
+			}
+		}
+		return "";
+	}
+
+	function getChampionRoleByID(championID){
+		for(var i=0;i<Object.keys(championModule.championsInfo.data).length;i++){
+			if(championModule.championsInfo.data[Object.keys(championModule.championsInfo.data)[i]].id == championID){
+				return championModule.championsInfo.data[Object.keys(championModule.championsInfo.data)[i]].tags[0];
 			}
 		}
 		return "";
@@ -26,7 +37,7 @@ var championModule=(function(){
 	function createChampionListItemHTML(summonerMastery,grade,showProgressBar){
 		var championID = summonerMastery.championId;
 		var championKey = getChampionKeyByID(championID);
-		var html = "<div class='championListItemDiv'><div class='imageList'><img class='championListImage' src='";
+		var html = "<div class='championListItemDiv "+getChampionRoleByID(championID)+"'><div class='imageList'><img class='championListImage' src='";
 		//img src:
 		html = html + getChampionSquareImgURL(championKey) + "'></img>";
 		//white hover overlay and champion info:
@@ -40,7 +51,24 @@ var championModule=(function(){
 		html = html + "</div>"
 		return html;
 	}
-	  
+
+	//filter champ by role in the CHampion Mastery Overview:
+	$("#championRoleFilter").change(function(){
+
+		var listItems = $(".championLevelGroup .championListItemDiv");
+
+		for( var i = 0 ;i < listItems.length; i++){
+			if( $(listItems[i]).hasClass( $(this).val() ) || $(this).val()=='All'){
+				$(listItems[i]).show();
+			}else{
+				$(listItems[i]).hide();
+			}
+		}
+		$("#sumMasteryPointsDisplayDiv").text(summonerModule.getSumMasteryPointsByRole($(this).val()));
+	});
+
+
+	 
 
 
     //public vars/methods:
@@ -48,6 +76,8 @@ var championModule=(function(){
     	createChampionListItemHTML:createChampionListItemHTML,
     	championsInfo: championsInfo,
     	getChampionSquareImgURL: getChampionSquareImgURL,
-    	getChampionKeyByID: getChampionKeyByID
+    	getChampionKeyByID: getChampionKeyByID,
+    	championRoles: championRoles,
+    	getChampionRoleByID:getChampionRoleByID
     };
 })();
