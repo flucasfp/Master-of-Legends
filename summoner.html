@@ -8,6 +8,8 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
 		<script src="http://code.highcharts.com/highcharts.js"></script>
+		<script src="https://code.highcharts.com/modules/data.js"></script>
+		<script src="https://code.highcharts.com/modules/drilldown.js"></script>
 		<link rel="stylesheet" href="css/style.css">
 	</head>
 
@@ -136,9 +138,17 @@
 									</div>
 								</div>
 							</div>
+
 							</div>	
 						</div>
 					</div>
+					<div class="row">
+						<div class="col-sm-6 pieChartCol" id="rolePiechart">
+						</div>
+						<div class="col-sm-6 pieChartCol" id="lanePiechart">
+						</div>
+					</div>
+
 				</div>
 			</div>
 		</div>
@@ -149,7 +159,7 @@
 	<script src="js/crossfilter.min.js"></script>
 	<script src="js/cookie.js"></script>
 	<script src="js/LocationSearcher.js"></script>
-	<script src="js/serverCommunication.js"></script>
+	<script src="js/ServerCommunication.js"></script>
 	<script src="js/DynamicStyle.js"></script>
 	<script src="js/Summoner.js"></script>
 	<script src="js/MainController.js"></script>

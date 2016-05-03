@@ -27,6 +27,7 @@ var dynamicStyleModule=(function(){
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 		$('#allChampionsChartContainer').highcharts().reflow();
 	});
+
     //public vars/methods:
     return{
 		loadNewBackground: loadNewBackground,

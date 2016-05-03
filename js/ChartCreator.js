@@ -78,7 +78,6 @@ var chartCreator=(function(){
 	        tooltip:{
 	        	useHTML: true,
 	        	formatter: function(){
-	        		console.log(tooltip[this.x]);
 					return tooltip[this.x];
 	        	}
 	        },
@@ -97,9 +96,63 @@ var chartCreator=(function(){
 	};
 
 
+	function createPieChartDrilldown(div,titleText,dataInput){
+		var series = dataInput.series;
+		var drilldown = dataInput.drilldown;
+
+		$('#'+div).highcharts({
+			chart: {
+			    type: 'pie',
+				backgroundColor: 'transparent',
+	            style:{
+	            	color:'white'
+	            }
+			},
+		    legend: { 
+		        borderRadius: 5,
+		        borderWidth: 1,
+				backgroundColor: 'white'
+		    },
+			title: {
+				text: titleText,
+				style:{
+	                	color: 'white'
+	            }
+			},
+			subtitle: {
+			    text: 'Click the slices to view Champions and click the legends to filter',
+				style:{
+	                	color: 'white'
+	            }
+			},
+			plotOptions: {
+			pie: {
+			            allowPointSelect: true,
+			            cursor: 'pointer',
+			            dataLabels: {
+			                enabled: false
+			            },
+			            showInLegend: true
+			        },
+			    series: {
+			        dataLabels: {
+			            enabled: false
+			        }
+			    },
+			},
+
+			tooltip:{
+		        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+		        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> Champion Points<br/>'
+		    },
+			series:series,
+			drilldown:drilldown
+	    });	
+	};
+
     //public vars/methods:
     return{
-    	createOverviewChart: createOverviewChart
-
+    	createOverviewChart: createOverviewChart,
+		createPieChartDrilldown: createPieChartDrilldown
     };
 })();

@@ -1,7 +1,7 @@
 from datetime import timedelta
 from flask import Flask, make_response, request, current_app
 from functools import update_wrapper
-import commands
+import urllib2
 
 app = Flask(__name__)
 
@@ -48,10 +48,6 @@ def crossdomain(origin=None, methods=None, headers=None,
 
 
 
-def formatResponse(string):
-    return string[string.find("{"):len(string)]
-
-
 
 
 
@@ -59,12 +55,7 @@ def getRiotAPIKey():
     return "<key>"
 
 def sendRequestToRiot(url):
-    command = "curl --request get '"+url+"'"
-    status,output = commands.getstatusoutput(command)
-    return formatResponse(output)
-
-
-
+    return urllib2.urlopen(url).read()
 
 
 def getChampionsSkinsInfo():
@@ -81,7 +72,7 @@ def getSummonerLeague(summonerID, summonerRegion):
 
 
 def getSummonerMastery(summonerID,summonerRegion):
-    maxChampions = 130
+    maxChampions = 500
     platforms = {}
     platforms['br'] = 'br1'
     platforms['eune'] = 'eune1'
