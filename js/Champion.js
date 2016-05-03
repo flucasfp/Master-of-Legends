@@ -2,6 +2,8 @@ var championModule=(function(){
 
 	var championsInfo = {};
 	var championRoles = ['Assassin','Fighter','Mage','Support','Tank','Marksman'];
+	var championLanes = [['MID', 'MIDDLE'], ['TOP'], ['JUNGLE'], ['BOT', 'BOTTOM']];
+	var championLanesLabels = ['Mid','Top','Jungle','Bot Carry','Bot Support'];
 
 	function getChampionSquareImgURL(championKey){
 		return "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/champion/"+championKey+".png"
@@ -83,12 +85,14 @@ var championModule=(function(){
 
     //public vars/methods:
     return{
-    	createChampionListItemHTML:createChampionListItemHTML,
+    	createChampionListItemHTML: createChampionListItemHTML,
     	championsInfo: championsInfo,
     	getChampionSquareImgURL: getChampionSquareImgURL,
     	getChampionKeyByID: getChampionKeyByID,
-    	championRoles: championRoles,	
-    	getChampionRoleByID:getChampionRoleByID,
-		getChampionNameByID:getChampionNameByID
+    	championRoles: championRoles,
+    	championLanes: championLanes,
+    	championLanesLabels: championLanesLabels,
+    	getChampionRoleByID: getChampionRoleByID,
+		getChampionNameByID: getChampionNameByID
     };
 })();

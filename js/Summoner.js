@@ -72,20 +72,19 @@ var summonerModule =(function(){
 
 	function showSummonerMasteryChart(){
 		chartCreator.createOverviewChart("allChampionsChartContainer",summonerInfo[accessKeySummonerInfo].name,summonerMastery);
-		console.log(summonerMatches);
 	};
 
 	function showSummonerPieCharts(){
 		var divRolePieChart = "rolePiechart";
 		var divLanePieChart = "lanePiechart";
 		var rolePieChartTitle = summonerInfo[accessKeySummonerInfo].name+"'s Champion Points by Role";
-		var lanePieChartTitle = summonerInfo[accessKeySummonerInfo].name+"'s Champion Points by Position";
+		var lanePieChartTitle = summonerInfo[accessKeySummonerInfo].name+"'s Champion Points by Position*";
 		var roleData = {series:[{name:'Roles',colorByPoint:true,data:[]}],drilldown:{series:[]}};
-		var laneData = {series:[],drilldown:{}};
+		var laneData = {series:[{name:'Lanes',colorByPoint:true,data:[]}],drilldown:{series:[]}};
 		
 		//init roleData Object:
 		for(var i=0; i<championModule.championRoles.length; i++){
-			var roleObject = {}
+			var roleObject = {};
 			roleObject.name = championModule.championRoles[i];
 			roleObject.y = 0;
 			roleObject.drilldown = championModule.championRoles[i];
@@ -107,6 +106,17 @@ var summonerModule =(function(){
 				}
 			}
 		}
+
+		//init laneData Object:
+		for(var i=0;i<championModule.championLanesLabels.length;i++){
+			var laneObject = {};
+			laneObject.name = championModule.championLanesLabels[i];
+			laneObject.y = 0;
+			laneObject.drilldown = championModule.championLanesLabels[i];
+			laneData.series[0].data.push(laneObject);
+		}
+
+		var dict = matchesModule.groupLaneRoleChampion(summonerMatches.matches);
 
 		chartCreator.createPieChartDrilldown(divRolePieChart,rolePieChartTitle,roleData);
 		chartCreator.createPieChartDrilldown(divLanePieChart,lanePieChartTitle,laneData);
