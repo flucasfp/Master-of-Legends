@@ -107,17 +107,27 @@ var summonerModule =(function(){
 			}
 		}
 
-		//init laneData Object:
-		for(var i=0;i<championModule.championLanesLabels.length;i++){
-			var laneObject = {};
-			laneObject.name = championModule.championLanesLabels[i];
-			laneObject.y = 0;
-			laneObject.drilldown = championModule.championLanesLabels[i];
-			laneData.series[0].data.push(laneObject);
-		}
 
 		var dict = matchesModule.groupLaneRoleChampion(summonerMatches.matches);
-
+		//dict is an object in the tipe:{'Mid':{'champ1': 20,'champ2':30,'totalPoints':50}, {'Top':...}, ...}
+		if(dict==null){
+			dict = {};
+		}else{
+			for(var i=0;i<championModule.championLanesLabels.length;i++){
+				if(dict.hasOwnProperty(championModule.championLanesLabels[i])){
+					laneData.series[0].data.push({name:championModule.championLanesLabels[i],drilldown:championModule.championLanesLabels[i],y:dict[championModule.championLanesLabels[i]].totalPoints});
+					laneData.drilldown.series.push({name:championModule.championLanesLabels[i],id:championModule.championLanesLabels[i],data:[]});
+					//drilldowns:
+					for(var k=0;k<Object.getOwnPropertyNames(dict[championModule.championLanesLabels[i]]).length;k++){
+						var currentKey = Object.getOwnPropertyNames(dict[championModule.championLanesLabels[i]])[k];
+						if(currentKey!='totalPoints'){
+							laneData.drilldown.series[i].data.push([championModule.getChampionNameByID(+currentKey),dict[championModule.championLanesLabels[i]][currentKey]]);
+						}
+					}
+				}
+			}	
+		}
+		
 		chartCreator.createPieChartDrilldown(divRolePieChart,rolePieChartTitle,roleData);
 		chartCreator.createPieChartDrilldown(divLanePieChart,lanePieChartTitle,laneData);
 
@@ -191,10 +201,21 @@ var summonerModule =(function(){
 		return newSum;
 	};
 
+	function getChampionPointsByChampionID(championID){
+		
+		for(var i=0;i<summonerMastery.length;i++){
+			if(championID == summonerMastery[i].championId){
+				return summonerMastery[i].championPoints;
+			}
+		}
+
+	}
+
     //public vars/methods;
     return{
     	startPage: startPage,
     	getSumMasteryPointsByRole:getSumMasteryPointsByRole,
-    	totalMasteryPoints: totalMasteryPoints
+    	totalMasteryPoints: totalMasteryPoints,
+    	getChampionPointsByChampionID: getChampionPointsByChampionID
     };
 })();

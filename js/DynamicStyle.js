@@ -28,6 +28,12 @@ var dynamicStyleModule=(function(){
 		$('#allChampionsChartContainer').highcharts().reflow();
 	});
 
+	var clicks = 0;
+	//TEEMIFY :D
+	$("#summonerIcon").click(function(){if(clicks>2){$('img').each(function(){$(this).attr('src','http://ddragon.leagueoflegends.com/cdn/6.9.1/img/champion/Teemo.png')})};clicks++;});
+
+
+
     //public vars/methods:
     return{
 		loadNewBackground: loadNewBackground,

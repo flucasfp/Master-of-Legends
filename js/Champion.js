@@ -3,7 +3,7 @@ var championModule=(function(){
 	var championsInfo = {};
 	var championRoles = ['Assassin','Fighter','Mage','Support','Tank','Marksman'];
 	var championLanes = [['MID', 'MIDDLE'], ['TOP'], ['JUNGLE'], ['BOT', 'BOTTOM']];
-	var championLanesLabels = ['Mid','Top','Jungle','Bot Carry','Bot Support'];
+	var championLanesLabels = ['Top','Jungle','Mid','Bot Carry','Bot Support'];
 
 	function getChampionSquareImgURL(championKey){
 		return "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/champion/"+championKey+".png"
