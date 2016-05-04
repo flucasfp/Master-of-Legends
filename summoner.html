@@ -8,6 +8,9 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
 		<script src="http://code.highcharts.com/highcharts.js"></script>
+		<script src="https://code.highcharts.com/modules/data.js"></script>
+		<script src="https://code.highcharts.com/modules/drilldown.js"></script>
+		<script src="https://code.highcharts.com/modules/no-data-to-display.js"></script>
 		<link rel="stylesheet" href="css/style.css">
 	</head>
 
@@ -136,15 +139,32 @@
 									</div>
 								</div>
 							</div>
+
 							</div>	
 						</div>
 					</div>
+					<div class="row">
+						<div class="col-sm-6 pieChartCol" id="rolePiechart">
+						</div>
+						<div class="col-sm-6 pieChartCol" id="lanePiechart">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6">
+						</div>
+						<div class="col-sm-6" style="text-align: right;font-size:10px">
+							*Only Ranked Team Builder Draft, Ranked Solo and Ranked Team in Summoner's Rift from Seasons 2015 and 2016 are considered. See <a href="about.html">About</a> for complete information.
+						</div>
+					</div>
+
+
 				</div>
 			</div>
 		</div>
 	</body>
 	<script>var page = 'summoner';</script>
 	<script src="js/Champion.js"></script>
+	<script src="js/Matches.js"></script>
 	<script src="js/ChartCreator.js"></script>
 	<script src="js/crossfilter.min.js"></script>
 	<script src="js/cookie.js"></script>

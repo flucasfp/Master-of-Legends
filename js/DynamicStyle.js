@@ -27,6 +27,25 @@ var dynamicStyleModule=(function(){
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 		$('#allChampionsChartContainer').highcharts().reflow();
 	});
+
+	var clicks = 1;
+	//LEAGUE OF DRAVEN
+	$("#summonerIcon").click(function(){
+		if(clicks==3){
+			$('img').each(function(){
+				$(this).attr('src','http://ddragon.leagueoflegends.com/cdn/6.9.1/img/champion/Draven.png')
+			})
+				$('.navbar-brand').text('LEAGUE OF DRAVEN');
+				$("#summonerName").text("DRAVEN");
+				$("#summonerRegion").text("NOXUS");
+				$("#summonerLevel").text("Level: INFINITY");
+			};
+			clicks++;
+		}
+		);
+
+
+
     //public vars/methods:
     return{
 		loadNewBackground: loadNewBackground,
