@@ -28,9 +28,21 @@ var dynamicStyleModule=(function(){
 		$('#allChampionsChartContainer').highcharts().reflow();
 	});
 
-	var clicks = 0;
-	//TEEMIFY :D
-	$("#summonerIcon").click(function(){if(clicks>2){$('img').each(function(){$(this).attr('src','http://ddragon.leagueoflegends.com/cdn/6.9.1/img/champion/Teemo.png')})};clicks++;});
+	var clicks = 1;
+	//LEAGUE OF DRAVEN
+	$("#summonerIcon").click(function(){
+		if(clicks==3){
+			$('img').each(function(){
+				$(this).attr('src','http://ddragon.leagueoflegends.com/cdn/6.9.1/img/champion/Draven.png')
+			})
+				$('.navbar-brand').text('LEAGUE OF DRAVEN');
+				$("#summonerName").text("DRAVEN");
+				$("#summonerRegion").text("NOXUS");
+				$("#summonerLevel").text("Level: INFINITY");
+			};
+			clicks++;
+		}
+		);
 
 
 

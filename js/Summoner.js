@@ -113,7 +113,10 @@ var summonerModule =(function(){
 		if(dict==null){
 			dict = {};
 		}else{
-			for(var i=0;i<championModule.championLanesLabels.length;i++){
+			var nextIndex = 0;
+			var i=0;
+			while(i<championModule.championLanesLabels.length){
+			//for(var i=0;i<championModule.championLanesLabels.length;i++){
 				if(dict.hasOwnProperty(championModule.championLanesLabels[i])){
 					laneData.series[0].data.push({name:championModule.championLanesLabels[i],drilldown:championModule.championLanesLabels[i],y:dict[championModule.championLanesLabels[i]].totalPoints});
 					laneData.drilldown.series.push({name:championModule.championLanesLabels[i],id:championModule.championLanesLabels[i],data:[]});
@@ -121,13 +124,15 @@ var summonerModule =(function(){
 					for(var k=0;k<Object.getOwnPropertyNames(dict[championModule.championLanesLabels[i]]).length;k++){
 						var currentKey = Object.getOwnPropertyNames(dict[championModule.championLanesLabels[i]])[k];
 						if(currentKey!='totalPoints'){
-							laneData.drilldown.series[i].data.push([championModule.getChampionNameByID(+currentKey),dict[championModule.championLanesLabels[i]][currentKey]]);
+							laneData.drilldown.series[nextIndex].data.push([championModule.getChampionNameByID(+currentKey),dict[championModule.championLanesLabels[i]][currentKey]]);
 						}
 					}
-				}
-			}	
+					nextIndex=nextIndex+1;
+				}	
+				i=i+1;			
+			}
 		}
-		
+				
 		chartCreator.createPieChartDrilldown(divRolePieChart,rolePieChartTitle,roleData);
 		chartCreator.createPieChartDrilldown(divLanePieChart,lanePieChartTitle,laneData);
 
@@ -140,6 +145,8 @@ var summonerModule =(function(){
 		$("#sumMasteryPointsDisplayDiv").text(totalMasteryPoints);
 		summonerMastery = mastery;
 		summonerMatches = matches;
+		console.log(summonerMastery);
+		console.log(summonerMatches);
 		showSummonerMasteryOverview();
 		showSummonerMasteryList();
 		showSummonerMasteryChart();
@@ -208,6 +215,7 @@ var summonerModule =(function(){
 				return summonerMastery[i].championPoints;
 			}
 		}
+		return 0;
 
 	}
 
@@ -216,6 +224,8 @@ var summonerModule =(function(){
     	startPage: startPage,
     	getSumMasteryPointsByRole:getSumMasteryPointsByRole,
     	totalMasteryPoints: totalMasteryPoints,
-    	getChampionPointsByChampionID: getChampionPointsByChampionID
+    	getChampionPointsByChampionID: getChampionPointsByChampionID,
+    	summonerMatches: summonerMatches,
+    	summonerMastery:summonerMastery
     };
 })();

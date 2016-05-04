@@ -95,7 +95,6 @@ var chartCreator=(function(){
 	    });
 	};
 
-
 	function createPieChartDrilldown(div,titleText,dataInput){
 		var series = dataInput.series;
 		var drilldown = dataInput.drilldown;
@@ -107,6 +106,17 @@ var chartCreator=(function(){
 	            style:{
 	            	color:'white'
 	            }
+			},
+			noData:{
+			    style: {
+	                fontWeight: 'bold',
+	                fontSize: '15px',
+	                color: 'white'
+            	},
+            	useHTML:true
+			},
+			lang:{
+				noData:"<div style='text-align:center'>No data to display :(<br>You should play more!</div>"
 			},
 		    legend: { 
 		        borderRadius: 5,
@@ -147,7 +157,7 @@ var chartCreator=(function(){
 		    },
 			series:series,
 			drilldown:drilldown
-	    });	
+	    });
 	};
 
     //public vars/methods:
