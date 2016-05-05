@@ -274,3 +274,37 @@ p{
 	stroke: #777;
 	stroke-dasharray: 2,2;	
 }
+.axis-label{
+	fill:#7CC3FF;
+	font-size:16px;
+}
+.coordChart-line{
+	opacity: 0.25;
+	stroke-width:3px;
+	fill:none;
+}
+.coordChart-line:hover{
+	opacity: 0.87;
+	stroke-width:4px;
+}
+.coordChart-tooltip {
+  position: absolute;
+  text-align: center;
+  width: 160px;
+  height: 140px;
+  padding: 8px;
+  margin-top: -20px;
+  font: 10px sans-serif;
+  background: #ddd;
+  pointer-events: none;
+}
+.coordChart-tooltip img{
+	width: 55px;
+	height: 55px;
+}
+.coordChart-tooltip span{
+	font-size: 14px;
+}
+.tooltipInnerDiv{
+	text-align: center;
+}

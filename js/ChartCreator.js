@@ -160,14 +160,110 @@ var chartCreator=(function(){
 	    });
 	};
 
+	//Everything now is part of the Parallel Coordinates Chart:
+	function numberStringFormatter(number){
+		var s = "";
+		if((number/1000000)>=1){
+			return ((number/1000000)+"m");
+		}
+		if((number/1000)>=1){
+			return ((number/1000)+"k");
+		}
+		return number;
+	}
 
+	var imgSize = 36;
 	var championsCoordChart;
 	var dataCoordChart;
+	var svgContainer;
 	var divCoordChart = "#coordChartContainer";
+	var coorChartColors = ['#1f78b4','#e31a1c','#33a02c','#fdbf6f','#ff7f00','#a6cee3','#cab2d6','#6a3d9a','#fb9a99','#b2df8a','#ffff99','#b15928'];
+	//creating the div that will be the tooltip:
+   	$("#coordChartTooltipDiv").remove();
+   	var tooltipDiv = d3.select('body').append("div")
+   						.attr("id","coordChartTooltipDiv")
+					    .attr("class", "coordChart-tooltip")
+					    .style("display", "none");
+	function createParalChartTooltip(i,championID,winRate,points,score,lineHover){
+		return function(){
+			var championName = championModule.getChampionNameByID(championID);
+			var championImgURL = championModule.getChampionSquareImgURL(championModule.getChampionKeyByID(championID));
+			var htmlString = "<div class='tooltipInnerDiv'>";
+			htmlString = htmlString + "<img src='"+championImgURL+"'></img>"+"<br><span><b>"+championName+"<b></span><br>";
+			htmlString = htmlString + "<br><b>Win Rate: </b>"+winRate*100+"%";
+			htmlString = htmlString + "<br><b>Champion Points: </b>"+points+"";
+			htmlString = htmlString + "<br><b>LegendScore: </b>"+score+"";
+			htmlString = htmlString + "</div>";
+			$("#coordChartTooltipDiv").html(htmlString);
+			if(lineHover){
+				//If the mouse hovered the line, redraw the image of the champion
+				//This way the champion go above the others in the axix
+				var img1 = svgContainer.select(".winRateImgChamp"+championID);
+				img1.remove();
+				svgContainer.append("svg:image")
+							.attr("width",imgSize)
+	   						.attr("height",imgSize)
+		   					.attr("class","winRateImgChamp"+championID)
+		   					.attr("x",$(img1[0][0]).attr("x"))
+		   					.attr("y",$(img1[0][0]).attr("y"))
+		   					.attr("xlink:href",championImgURL)
+		   					.on('mouseover',createParalChartTooltip(i,championID,winRate,points,score,lineHover))
+		   					.on('mousemove',function(){
+		   						tooltipDiv.style("left", (d3.event.pageX - 34) + "px")
+	      								  .style("top", (d3.event.pageY - 12) + "px");
+		   					})
+		   					.on('mouseout',function(){	   						
+								$("#coordChartTooltipDiv").hide();	   						
+		   					});	
+
+				var img2 = svgContainer.selectAll(".pointsImgChamp"+championID);
+				img2.remove();
+				svgContainer.append("svg:image")
+							.attr("width",imgSize)
+	   						.attr("height",imgSize)
+		   					.attr("class","pointsImgChamp"+championID)
+		   					.attr("x",$(img2[0][0]).attr("x"))
+		   					.attr("y",$(img2[0][0]).attr("y"))
+		   					.attr("xlink:href",championImgURL)
+		   					.on('mouseover',createParalChartTooltip(i,championID,winRate,points,score,lineHover))
+		   					.on('mousemove',function(){
+		   						tooltipDiv.style("left", (d3.event.pageX - 34) + "px")
+	      								  .style("top", (d3.event.pageY - 12) + "px");
+		   					})
+		   					.on('mouseout',function(){ 						
+								$("#coordChartTooltipDiv").hide();	   						
+		   					});	
+
+				var img3 = svgContainer.selectAll(".scoreImgChamp"+championID);
+				img3.remove();
+				svgContainer.append("svg:image")
+							.attr("width",imgSize)
+	   						.attr("height",imgSize)
+		   					.attr("class","scoreImgChamp"+championID)
+		   					.attr("x",$(img3[0][0]).attr("x"))
+		   					.attr("y",$(img3[0][0]).attr("y"))
+		   					.attr("xlink:href",championImgURL)
+		   					.on('mouseover',createParalChartTooltip(i,championID,winRate,points,score,lineHover))
+		   					.on('mousemove',function(){
+		   						tooltipDiv.style("left", (d3.event.pageX - 34) + "px")
+	      								  .style("top", (d3.event.pageY - 12) + "px");
+		   					})
+		   					.on('mouseout',function(){	   						
+								$("#coordChartTooltipDiv").hide();	   						
+		   					});	
+			}
+
+			$("#coordChartTooltipDiv").show();
+
+		};
+	}
 	function makeParalCoordChart(){
 		var champions = chartCreator.championsCoordChart;
 		var data = chartCreator.dataCoordChart;
 
+		if(typeof data === 'undefined'){
+			return;
+		}
 		//before call this function, set the championsCoordChart and dataCoordChart vars!
 		var margin = {top: 30, right: 140, bottom: 30, left: 20};
 		var width = parseInt($(divCoordChart).css("width"));
@@ -175,33 +271,46 @@ var chartCreator=(function(){
 		var height = 400;
 		var spaceBetweenAxis = 160;
 		var coordNumber = 3;
-		var coordLabels = ['Win Rate','Champion Points','LegendScore'];
-
+		
 		d3.selectAll("#coordChart").remove();
 
-		var svgContainer = d3.select(divCoordChart).append("svg")
+		svgContainer = d3.select(divCoordChart).append("svg")
 			.attr("id","coordChart")
 			.attr("width",width + margin.left + margin.right)
 			.attr("height", height + margin.top + margin.bottom)
 			.append("g")
 	    	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+	    var maxPoints = -1;
+	    var maxScore = -1;
+
+	    for(var i=0;i<data.length;i++){
+	    	if(data[i][1]>maxPoints){
+	    		maxPoints = data[i][1];
+	    	}
+	    	if(data[i][2]>maxScore){
+	    		maxScore = data[i][2];
+	    	}
+	    }
+
 		var winRateScale = d3.scale.linear().domain([0,1]).range([0,(width-margin.right-margin.left)]);
-		var pointsScale = d3.scale.linear().domain([10000,100000]).range([0,(width-margin.right-margin.left)]);
-		var scoreScale = d3.scale.linear().domain([200,800]).range([0,(width-margin.right-margin.left)]);
+		var pointsScale = d3.scale.linear().domain([0,maxPoints]).range([0,(width-margin.right-margin.left)]);
+		var scoreScale = d3.scale.linear().domain([0,maxScore]).range([0,(width-margin.right-margin.left)]);
 
-		var xAxisWinRate = d3.svg.axis().scale(winRateScale).orient("top");
-		var xAxisPoints = d3.svg.axis().scale(pointsScale);
-		var xAxisScore = d3.svg.axis().scale(scoreScale);
+		var xAxisWinRate = d3.svg.axis().scale(winRateScale).tickFormat(function(d){return (d*100)+"%";});
+		var xAxisPoints = d3.svg.axis().scale(pointsScale).tickFormat(numberStringFormatter);
+		var xAxisScore = d3.svg.axis().scale(scoreScale).tickFormat(numberStringFormatter);
 
-		
-		var scoreYPosition = margin.left+"," + (height-margin.bottom);
+		var spaceBetweenAxisAndTextLabel = 20;
+
+		var scoreYPosition = margin.left + (height-margin.bottom);
 
 		svgContainer.append('g').attr("class", "x axis")
-	    							.attr("transform", "translate("+scoreYPosition+ ")")
+	    							.attr("transform", "translate("+margin.left+","+scoreYPosition+ ")")
 	    							.call(xAxisScore);
 
 	    var pointsYPosition =  (height-margin.bottom - (spaceBetweenAxis*1));
+
 
 	   	svgContainer.append('g')
 	   						.attr("class","x axis")
@@ -212,9 +321,106 @@ var chartCreator=(function(){
 
 		svgContainer.append('g')
 	   						.attr("class","x axis")
-	   						.attr("color","white")
 	   						.attr("transform", "translate("+margin.left+"," +winRateYPosition+ ")")
 	   						.call(xAxisWinRate);
+
+	   	//Inserting the axis labels:
+	   	svgContainer.append("text")
+	   						.text("Win Rate")
+	   						.attr("class","axis-label")
+	   						.attr("x", width-margin.right+spaceBetweenAxisAndTextLabel)
+	   						.attr("y",winRateYPosition+5);
+	    svgContainer.append("text")
+	   						.text("Champion")
+	   						.attr("class","axis-label")
+	   						.attr("x", width-margin.right+spaceBetweenAxisAndTextLabel)
+	   						.attr("y",pointsYPosition+5);
+	   	svgContainer.append("text")
+	   						.text("Points")
+	   						.attr("class","axis-label")
+	   						.attr("x", width-margin.right+spaceBetweenAxisAndTextLabel)
+	   						.attr("y",pointsYPosition+6+parseInt($(".axis-label").css("font-size")));
+		svgContainer.append("text")
+	   						.text("Legend")
+	   						.attr("class","axis-label")
+	   						.attr("x", width-margin.right+spaceBetweenAxisAndTextLabel)
+	   						.attr("y",scoreYPosition+5);
+	   	svgContainer.append("text")
+	   						.text("Score")
+	   						.attr("class","axis-label")
+	   						.attr("x", width-margin.right+spaceBetweenAxisAndTextLabel)
+	   						.attr("y",scoreYPosition+6+parseInt($(".axis-label").css("font-size")));
+
+
+	   	for(var i=0;i<data.length;i++){
+	   		var polylinePoints = "";
+	   		polylinePoints=polylinePoints+parseInt(winRateScale(data[i][0])+margin.left)+","+winRateYPosition+" ";
+			polylinePoints=polylinePoints+parseInt(pointsScale(data[i][1])+margin.left)+","+pointsYPosition+" ";
+			polylinePoints=polylinePoints+parseInt(scoreScale(data[i][2])+margin.left)+","+scoreYPosition;	   		
+	   		//line from winrate to champion points
+	   		svgContainer.append("polyline")
+	   					.attr("id","champLine"+champions[i])
+	   					.attr("class","coordChart-line")
+	   					.attr("points",polylinePoints)
+	   					.attr("stroke", coorChartColors[i%coorChartColors.length])
+	   					.on('mouseover',createParalChartTooltip(i,champions[i],chartCreator.dataCoordChart[i][0],chartCreator.dataCoordChart[i][1],chartCreator.dataCoordChart[i][2],true))
+	   					.on('mousemove',function(){
+	   						tooltipDiv.style("left", (d3.event.pageX - 34) + "px")
+      								  .style("top", (d3.event.pageY - 12) + "px");
+	   					})
+	   					.on('mouseout',function(){
+							$("#coordChartTooltipDiv").hide();	   						
+	   					});
+	   		
+
+	   		//now insert the champion image
+	   		var championImgURL = championModule.getChampionSquareImgURL(championModule.getChampionKeyByID(champions[i]));
+	   		var imagemX1 = svgContainer.append("svg:image")
+	   					.attr("width",imgSize)
+	   					.attr("height",imgSize)
+	   					.attr("class","winRateImgChamp"+champions[i])
+	   					.attr("x",parseInt(winRateScale(data[i][0])+margin.left-(imgSize/2)))
+	   					.attr("y",winRateYPosition-imgSize)
+	   					.attr("xlink:href",championImgURL)
+	   					.on('mouseover',createParalChartTooltip(i,champions[i],chartCreator.dataCoordChart[i][0],chartCreator.dataCoordChart[i][1],chartCreator.dataCoordChart[i][2]))
+	   					.on('mousemove',function(){
+	   						tooltipDiv.style("left", (d3.event.pageX - 34) + "px")
+      								  .style("top", (d3.event.pageY - 12) + "px");
+	   					})
+	   					.on('mouseout',function(){
+							$("#coordChartTooltipDiv").hide();	   						
+	   					});	
+	   		var imagemX2 = svgContainer.append("svg:image")
+	   					.attr("width",imgSize)
+	   					.attr("height",imgSize)
+	   					.attr("class","pointsImgChamp"+champions[i])
+	   					.attr("x",parseInt(pointsScale(data[i][1])+margin.left-(imgSize/2)))
+	   					.attr("y",pointsYPosition-imgSize)
+	   					.attr("xlink:href",championImgURL)
+	   					.on('mouseover',createParalChartTooltip(i,champions[i],chartCreator.dataCoordChart[i][0],chartCreator.dataCoordChart[i][1],chartCreator.dataCoordChart[i][2]))
+	   					.on('mousemove',function(){
+	   						tooltipDiv.style("left", (d3.event.pageX - 34) + "px")
+      								  .style("top", (d3.event.pageY - 12) + "px");
+	   					})
+	   					.on('mouseout',function(){	   						
+							$("#coordChartTooltipDiv").hide();	   						
+	   					});	
+	   		var imagemX3 = svgContainer.append("svg:image")
+	   					.attr("width",imgSize)
+	   					.attr("height",imgSize)
+	   					.attr("class","scoreImgChamp"+champions[i])
+	   					.attr("x",parseInt(scoreScale(data[i][2])+margin.left-(imgSize/2)))
+	   					.attr("y",scoreYPosition-imgSize)
+	   					.attr("xlink:href",championImgURL)
+	   					.on('mouseover',createParalChartTooltip(i,champions[i],chartCreator.dataCoordChart[i][0],chartCreator.dataCoordChart[i][1],chartCreator.dataCoordChart[i][2]))
+	   					.on('mousemove',function(){
+	   						tooltipDiv.style("left", (d3.event.pageX - 34) + "px")
+      								  .style("top", (d3.event.pageY - 12) + "px");
+	   					})
+	   					.on('mouseout',function(){	   						
+							$("#coordChartTooltipDiv").hide();							
+	   					});
+	   	}
 	}
 
    	//make it responsive!
