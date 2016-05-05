@@ -160,9 +160,73 @@ var chartCreator=(function(){
 	    });
 	};
 
+
+	var championsCoordChart;
+	var dataCoordChart;
+	var divCoordChart = "#coordChartContainer";
+	function makeParalCoordChart(){
+		var champions = chartCreator.championsCoordChart;
+		var data = chartCreator.dataCoordChart;
+
+		//before call this function, set the championsCoordChart and dataCoordChart vars!
+		var margin = {top: 30, right: 140, bottom: 30, left: 20};
+		var width = parseInt($(divCoordChart).css("width"));
+
+		var height = 400;
+		var spaceBetweenAxis = 160;
+		var coordNumber = 3;
+		var coordLabels = ['Win Rate','Champion Points','LegendScore'];
+
+		d3.selectAll("#coordChart").remove();
+
+		var svgContainer = d3.select(divCoordChart).append("svg")
+			.attr("id","coordChart")
+			.attr("width",width + margin.left + margin.right)
+			.attr("height", height + margin.top + margin.bottom)
+			.append("g")
+	    	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+		var winRateScale = d3.scale.linear().domain([0,1]).range([0,(width-margin.right-margin.left)]);
+		var pointsScale = d3.scale.linear().domain([10000,100000]).range([0,(width-margin.right-margin.left)]);
+		var scoreScale = d3.scale.linear().domain([200,800]).range([0,(width-margin.right-margin.left)]);
+
+		var xAxisWinRate = d3.svg.axis().scale(winRateScale).orient("top");
+		var xAxisPoints = d3.svg.axis().scale(pointsScale);
+		var xAxisScore = d3.svg.axis().scale(scoreScale);
+
+		
+		var scoreYPosition = margin.left+"," + (height-margin.bottom);
+
+		svgContainer.append('g').attr("class", "x axis")
+	    							.attr("transform", "translate("+scoreYPosition+ ")")
+	    							.call(xAxisScore);
+
+	    var pointsYPosition =  (height-margin.bottom - (spaceBetweenAxis*1));
+
+	   	svgContainer.append('g')
+	   						.attr("class","x axis")
+	   						.attr("transform", "translate("+margin.left+"," +pointsYPosition+ ")")
+	   						.call(xAxisPoints);
+
+	   	var winRateYPosition =  (height-margin.bottom - (spaceBetweenAxis*2));
+
+		svgContainer.append('g')
+	   						.attr("class","x axis")
+	   						.attr("color","white")
+	   						.attr("transform", "translate("+margin.left+"," +winRateYPosition+ ")")
+	   						.call(xAxisWinRate);
+	}
+
+   	//make it responsive!
+	$(window).on('resize',function(){makeParalCoordChart()});
+	
+
     //public vars/methods:
     return{
     	createOverviewChart: createOverviewChart,
-		createPieChartDrilldown: createPieChartDrilldown
+		createPieChartDrilldown: createPieChartDrilldown,
+		championsCoordChart:championsCoordChart,
+		dataCoordChart:dataCoordChart,
+		makeParalCoordChart:makeParalCoordChart
     };
 })();

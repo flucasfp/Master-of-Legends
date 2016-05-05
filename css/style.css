@@ -247,3 +247,30 @@ p{
 .pieChartCol{
 	height:450px;
 }
+
+#coordChartContainer{
+	color: white;
+	font: white;
+	font-size:11px;
+	background-color:#313745;
+}
+.axis path {
+	stroke: white;
+	stroke-width: 2px;
+	fill-opacity:0;
+}
+.axis line {
+	fill: white;
+	shape-rendering: crispEdges;
+	stroke: #000;
+}
+.tick{
+	fill:white;
+}
+.tick line{
+	stroke:white;
+}
+.axis .minor line {
+	stroke: #777;
+	stroke-dasharray: 2,2;	
+}

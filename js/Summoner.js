@@ -40,6 +40,16 @@ var summonerModule =(function(){
 		}
 	}
 
+	function showSummonerParalCoordChart(){
+		chartCreator.dataCoordChart =  [
+											[0.5,200000,700],
+											[0.7,50000,900],
+											[0.7,90000,1000],
+											[0.3,10000,900]
+										];
+		chartCreator.championsCoordChart = ['Karthus','Cait','Janna','LeBlanc'];
+		chartCreator.makeParalCoordChart();
+	}
 	function showSummonerMasteryOverview(){
 		var countChampions = 0;
 		var maxShowed = 3;
@@ -145,12 +155,11 @@ var summonerModule =(function(){
 		$("#sumMasteryPointsDisplayDiv").text(totalMasteryPoints);
 		summonerMastery = mastery;
 		summonerMatches = matches;
-		console.log(summonerMastery);
-		console.log(summonerMatches);
 		showSummonerMasteryOverview();
 		showSummonerMasteryList();
 		showSummonerMasteryChart();
 		showSummonerPieCharts();
+		showSummonerParalCoordChart();
 	}
 	
 	function checkSummonerInfoResponse(queryData){
