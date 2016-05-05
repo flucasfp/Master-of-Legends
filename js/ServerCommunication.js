@@ -46,17 +46,51 @@ var serverCommunication=(function(){
                 callbackFunction(JSON.parse(data1[0]),JSON.parse(data2[0]));                
             },
             function(data1,data2,data3){
-                console.log('Fail to load resources! :(');               
+                console.log('Failed to load resources! :(');               
             }
         )
-
     }
 
+    function getSummonerRankedStats(summonerID, summonerRegion, callbackFunction){
+        var seasons = ['SEASON2015','SEASON2016'];
+        var rankedInfo1 = {'champions':[]};
+        var rankedInfo2 = {'champions':[]};
+        var returnData = {'champions':[]};
+        var url1 = serverURL+"getSummonerRankedStats=true&summonerID="+summonerID+"&summonerRegion="+summonerRegion+"&season="+seasons[0];
+        var url2 = serverURL+"getSummonerRankedStats=true&summonerID="+summonerID+"&summonerRegion="+summonerRegion+"&season="+seasons[1];
+        
+        $.ajax(url1)
+        .done(function(data){
+            rankedInfo1 = JSON.parse(data);
+        }).error(function(data){
+            console.log("No ranked stats from "+seasons[0]);
+        }).complete(function(data){
+                        $.ajax(url2)
+                            .done(function(data){
+                                rankedInfo2 = JSON.parse(data);
+                            }).error(function(data){
+                                console.log("No ranked stats from "+seasons[1]);
+                            }).complete(function(data){
+                                for(var i=0;i<rankedInfo1.champions.length;i++){
+                                    if(rankedInfo1.champions[i].id!=0){
+                                        returnData.champions.push(rankedInfo1.champions[i]);
+                                    }
+                                }
+                                for(var i=0;i<rankedInfo2.champions.length;i++){
+                                    if(rankedInfo2.champions[i].id!=0){
+                                        returnData.champions.push(rankedInfo2.champions[i]);    
+                                    }
+                                }
+                                callbackFunction(returnData);
+                            })
+        })
+    }
     //public vars/methods:
     return{
         getRandomSplashURL: getRandomSplashURL,
         getSummonerInfo: getSummonerInfo,
         getSummonerLeague: getSummonerLeague,
-        getMasteryAndMatches: getMasteryAndMatches
+        getMasteryAndMatches: getMasteryAndMatches,
+        getSummonerRankedStats: getSummonerRankedStats
     };
 })();

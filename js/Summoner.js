@@ -40,6 +40,18 @@ var summonerModule =(function(){
 		}
 	}
 
+	function getLegendScore(winMatches,totalMatches,championPoints){
+//		return totalMatches;
+		return parseInt(championPoints/totalMatches*(winMatches));
+	}
+	function showSummonerParalCoordChart(champions,data){
+		//IDs:
+		chartCreator.championsCoordChart = champions;
+		// [ [],[winrate, champPoints, legendScore], [] , ...  ]
+		chartCreator.dataCoordChart =  data;
+		
+		chartCreator.makeParalCoordChart();
+	}
 	function showSummonerMasteryOverview(){
 		var countChampions = 0;
 		var maxShowed = 3;
@@ -138,6 +150,47 @@ var summonerModule =(function(){
 
 	};
 
+	function checkSummonerRankedStatsResponse(stats){
+		var facts = crossfilter(stats.champions);
+
+		var championDimension = facts.dimension(function(d){
+			return d.id;
+		});
+
+		var championWinGroup = championDimension.group().reduceSum(function(d){ return d.stats.totalSessionsWon});
+		var championTotalGroup = championDimension.group().reduceSum(function(d){ return d.stats.totalSessionsPlayed});
+
+		var winValuesArray = championWinGroup.top(Infinity);
+		var playedValuesArray = championTotalGroup.top(Infinity);
+
+		var dataObject = {};
+		for(var i=0;i<winValuesArray.length;i++){
+			dataObject[winValuesArray[i].key] = {'win':winValuesArray[i].value};
+		}
+		for(var i=0;i<playedValuesArray.length;i++){
+			dataObject[playedValuesArray[i].key].played = playedValuesArray[i].value;		
+		}
+
+		championsArray = [];
+		dataArray = [];
+		for(var i=0;i<playedValuesArray.length;i++){
+
+			championsArray.push(playedValuesArray[i].key);
+			var winMatches = dataObject[playedValuesArray[i].key].win;
+			var totalMatches = dataObject[playedValuesArray[i].key].played;
+			var championPoints = getChampionPointsByChampionID(playedValuesArray[i].key); 
+
+			dataArray.push( [
+								parseFloat((winMatches/totalMatches).toFixed(4)),
+								championPoints,
+								getLegendScore(winMatches,totalMatches,championPoints)								
+							]
+						 );
+		}
+
+		showSummonerParalCoordChart(championsArray,dataArray);
+	}
+
 	function checkSummonerMasteryandMasteryResponse(mastery, matches){
 		for(var i=0;i<mastery.length;i++){
 			totalMasteryPoints = totalMasteryPoints + mastery[i].championLevel;
@@ -145,12 +198,12 @@ var summonerModule =(function(){
 		$("#sumMasteryPointsDisplayDiv").text(totalMasteryPoints);
 		summonerMastery = mastery;
 		summonerMatches = matches;
-		console.log(summonerMastery);
-		console.log(summonerMatches);
 		showSummonerMasteryOverview();
 		showSummonerMasteryList();
 		showSummonerMasteryChart();
 		showSummonerPieCharts();
+
+		serverCommunication.getSummonerRankedStats(summonerInfo[accessKeySummonerInfo].id,summonerInfo.region,checkSummonerRankedStatsResponse);
 	}
 	
 	function checkSummonerInfoResponse(queryData){
