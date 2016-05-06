@@ -204,6 +204,8 @@ var summonerModule =(function(){
 		showSummonerPieCharts();
 
 		serverCommunication.getSummonerRankedStats(summonerInfo[accessKeySummonerInfo].id,summonerInfo.region,checkSummonerRankedStatsResponse);
+
+		comparator.initSummonerNameInputs(summonerInfo[accessKeySummonerInfo].name);
 	}
 	
 	function checkSummonerInfoResponse(queryData){
