@@ -284,7 +284,8 @@ p{
 	fill:none;
 }
 .coordChart-line:hover{
-	opacity: 0.87;
+	opacity: 1;
+	/*opacity: 0.87;*/
 	stroke-width:4px;
 }
 .coordChart-tooltip {
@@ -312,8 +313,12 @@ p{
 	height:600px;
 }
 #comparationChartDiv{
-	height: 600px;
-	overflow: auto;
+	height: 598px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+#comparationChart{
+	min-height: 400px;
 }
 #comparationInputsDiv{
 	/*margin-top:20px;*/
@@ -349,4 +354,22 @@ p{
 }
 .fa-2x.active{
 	color:white;
+}
+
+.form-group.summonerInput{
+	margin-bottom: 0px;
+}
+.alert.alert-info.comparator, .alert.alert-danger.comparator{
+	display:inherit;
+	padding: 5px;
+	text-align: left;
+	margin-top:10px;
+	margin-bottom:0px;
+}
+.comparatorImg{
+	width: 45px;
+	height: 45px;
+}
+.comparatorXLabel{
+	text-align: right;
 }

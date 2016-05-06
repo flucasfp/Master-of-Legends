@@ -206,15 +206,7 @@ var chartCreator=(function(){
 		   					.attr("class","winRateImgChamp"+championID)
 		   					.attr("x",$(img1[0][0]).attr("x"))
 		   					.attr("y",$(img1[0][0]).attr("y"))
-		   					.attr("xlink:href",championImgURL)
-		   					.on('mouseover',createParalChartTooltip(i,championID,winRate,points,score,lineHover))
-		   					.on('mousemove',function(){
-		   						tooltipDiv.style("left", (d3.event.pageX - 34) + "px")
-	      								  .style("top", (d3.event.pageY - 12) + "px");
-		   					})
-		   					.on('mouseout',function(){	   						
-								$("#coordChartTooltipDiv").hide();	   						
-		   					});	
+		   					.attr("xlink:href",championImgURL);	
 
 				var img2 = svgContainer.selectAll(".pointsImgChamp"+championID);
 				img2.remove();
@@ -224,15 +216,7 @@ var chartCreator=(function(){
 		   					.attr("class","pointsImgChamp"+championID)
 		   					.attr("x",$(img2[0][0]).attr("x"))
 		   					.attr("y",$(img2[0][0]).attr("y"))
-		   					.attr("xlink:href",championImgURL)
-		   					.on('mouseover',createParalChartTooltip(i,championID,winRate,points,score,lineHover))
-		   					.on('mousemove',function(){
-		   						tooltipDiv.style("left", (d3.event.pageX - 34) + "px")
-	      								  .style("top", (d3.event.pageY - 12) + "px");
-		   					})
-		   					.on('mouseout',function(){ 						
-								$("#coordChartTooltipDiv").hide();	   						
-		   					});	
+		   					.attr("xlink:href",championImgURL);	
 
 				var img3 = svgContainer.selectAll(".scoreImgChamp"+championID);
 				img3.remove();
@@ -242,15 +226,7 @@ var chartCreator=(function(){
 		   					.attr("class","scoreImgChamp"+championID)
 		   					.attr("x",$(img3[0][0]).attr("x"))
 		   					.attr("y",$(img3[0][0]).attr("y"))
-		   					.attr("xlink:href",championImgURL)
-		   					.on('mouseover',createParalChartTooltip(i,championID,winRate,points,score,lineHover))
-		   					.on('mousemove',function(){
-		   						tooltipDiv.style("left", (d3.event.pageX - 34) + "px")
-	      								  .style("top", (d3.event.pageY - 12) + "px");
-		   					})
-		   					.on('mouseout',function(){	   						
-								$("#coordChartTooltipDiv").hide();	   						
-		   					});	
+		   					.attr("xlink:href",championImgURL);	
 			}
 
 			$("#coordChartTooltipDiv").show();
@@ -381,45 +357,24 @@ var chartCreator=(function(){
 	   					.attr("class","winRateImgChamp"+champions[i])
 	   					.attr("x",parseInt(winRateScale(data[i][0])+margin.left-(imgSize/2)))
 	   					.attr("y",winRateYPosition-imgSize)
-	   					.attr("xlink:href",championImgURL)
-	   					.on('mouseover',createParalChartTooltip(i,champions[i],chartCreator.dataCoordChart[i][0],chartCreator.dataCoordChart[i][1],chartCreator.dataCoordChart[i][2]))
-	   					.on('mousemove',function(){
-	   						tooltipDiv.style("left", (d3.event.pageX - 34) + "px")
-      								  .style("top", (d3.event.pageY - 12) + "px");
-	   					})
-	   					.on('mouseout',function(){
-							$("#coordChartTooltipDiv").hide();	   						
-	   					});	
+	   					.attr("xlink:href",championImgURL);	
+
 	   		var imagemX2 = svgContainer.append("svg:image")
 	   					.attr("width",imgSize)
 	   					.attr("height",imgSize)
 	   					.attr("class","pointsImgChamp"+champions[i])
 	   					.attr("x",parseInt(pointsScale(data[i][1])+margin.left-(imgSize/2)))
 	   					.attr("y",pointsYPosition-imgSize)
-	   					.attr("xlink:href",championImgURL)
-	   					.on('mouseover',createParalChartTooltip(i,champions[i],chartCreator.dataCoordChart[i][0],chartCreator.dataCoordChart[i][1],chartCreator.dataCoordChart[i][2]))
-	   					.on('mousemove',function(){
-	   						tooltipDiv.style("left", (d3.event.pageX - 34) + "px")
-      								  .style("top", (d3.event.pageY - 12) + "px");
-	   					})
-	   					.on('mouseout',function(){	   						
-							$("#coordChartTooltipDiv").hide();	   						
-	   					});	
+	   					.attr("xlink:href",championImgURL);
+
 	   		var imagemX3 = svgContainer.append("svg:image")
 	   					.attr("width",imgSize)
 	   					.attr("height",imgSize)
 	   					.attr("class","scoreImgChamp"+champions[i])
 	   					.attr("x",parseInt(scoreScale(data[i][2])+margin.left-(imgSize/2)))
 	   					.attr("y",scoreYPosition-imgSize)
-	   					.attr("xlink:href",championImgURL)
-	   					.on('mouseover',createParalChartTooltip(i,champions[i],chartCreator.dataCoordChart[i][0],chartCreator.dataCoordChart[i][1],chartCreator.dataCoordChart[i][2]))
-	   					.on('mousemove',function(){
-	   						tooltipDiv.style("left", (d3.event.pageX - 34) + "px")
-      								  .style("top", (d3.event.pageY - 12) + "px");
-	   					})
-	   					.on('mouseout',function(){	   						
-							$("#coordChartTooltipDiv").hide();							
-	   					});
+	   					.attr("xlink:href",championImgURL);
+	   					
 	   	}
 	}
 
