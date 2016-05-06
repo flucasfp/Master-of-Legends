@@ -140,7 +140,7 @@ p{
 	color:white;
 }
 #showAllChampionsDiv:hover{
-	cursor: pointer;
+	/*cursor: pointer;*/
 }
 
 #allChampionsList, #allChampionsChart{
@@ -284,7 +284,8 @@ p{
 	fill:none;
 }
 .coordChart-line:hover{
-	opacity: 0.87;
+	opacity: 1;
+	/*opacity: 0.87;*/
 	stroke-width:4px;
 }
 .coordChart-tooltip {
@@ -307,4 +308,68 @@ p{
 }
 .tooltipInnerDiv{
 	text-align: center;
+}
+#comparationDiv{
+	height:600px;
+}
+#comparationChartDiv{
+	height: 598px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+#comparationChart{
+	min-height: 400px;
+}
+#comparationInputsDiv{
+	/*margin-top:20px;*/
+	border-right: 1px solid white;
+	height: 600px;
+	overflow: auto;
+}
+.comparationTextInput{
+	float:left;
+	margin-top:15px;
+	max-width: calc(100% - 28px);
+	text-align: center;
+	height: 25px;
+	background-color: #E7E7E7;
+}
+.comparationButton{
+	margin-left:4px;
+	margin-right:0px;
+	margin-top:15px;
+}
+#comparationLabelSubTitle{
+	font-size:15px;
+}
+#comparationDiv{
+
+	border: 1px solid white;
+	border-radius:15px;
+	margin-left:5px;
+	margin-right:5px;
+}
+.fa{
+	color:gray;
+}
+.fa-2x.active{
+	color:white;
+}
+
+.form-group.summonerInput{
+	margin-bottom: 0px;
+}
+.alert.alert-info.comparator, .alert.alert-danger.comparator{
+	display:inherit;
+	padding: 5px;
+	text-align: left;
+	margin-top:10px;
+	margin-bottom:0px;
+}
+.comparatorImg{
+	width: 45px;
+	height: 45px;
+}
+.comparatorXLabel{
+	text-align: right;
 }

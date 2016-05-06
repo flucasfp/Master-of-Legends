@@ -34,6 +34,13 @@ var serverCommunication=(function(){
         
     };
 
+    function getSummonerMastery(summonerID,summonerRegion,callbackFunction){
+        $.ajax(serverURL+"getSummonerMastery=true&summonerID="+summonerID+"&summonerRegion="+summonerRegion).done(function(data){
+            data = JSON.parse(data);
+            callbackFunction(data);
+        }).error(function(data){callbackFunction("error");});
+    }   
+
     function getMasteryAndMatches(summonerID, summonerRegion, callbackFunction){
         //This gets Champions info too!
         $.when(
@@ -91,6 +98,7 @@ var serverCommunication=(function(){
         getSummonerInfo: getSummonerInfo,
         getSummonerLeague: getSummonerLeague,
         getMasteryAndMatches: getMasteryAndMatches,
-        getSummonerRankedStats: getSummonerRankedStats
+        getSummonerRankedStats: getSummonerRankedStats,
+        getSummonerMastery:getSummonerMastery
     };
 })();
