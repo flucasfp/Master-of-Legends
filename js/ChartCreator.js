@@ -234,6 +234,7 @@ var chartCreator=(function(){
 		};
 	}
 	function makeParalCoordChart(){
+		var filter = $("#paralCoordFilter").val().toLowerCase();
 		var champions = chartCreator.championsCoordChart;
 		var data = chartCreator.dataCoordChart;
 
@@ -329,53 +330,55 @@ var chartCreator=(function(){
 
 
 	   	for(var i=0;i<data.length;i++){
-	   		var polylinePoints = "";
-	   		polylinePoints=polylinePoints+parseInt(winRateScale(data[i][0])+margin.left)+","+winRateYPosition+" ";
-			polylinePoints=polylinePoints+parseInt(pointsScale(data[i][1])+margin.left)+","+pointsYPosition+" ";
-			polylinePoints=polylinePoints+parseInt(scoreScale(data[i][2])+margin.left)+","+scoreYPosition;	   		
-	   		//line from winrate to champion points
-	   		svgContainer.append("polyline")
-	   					.attr("id","champLine"+champions[i])
-	   					.attr("class","coordChart-line")
-	   					.attr("points",polylinePoints)
-	   					.attr("stroke", coorChartColors[i%coorChartColors.length])
-	   					.on('mouseover',createParalChartTooltip(i,champions[i],chartCreator.dataCoordChart[i][0],chartCreator.dataCoordChart[i][1],chartCreator.dataCoordChart[i][2],true))
-	   					.on('mousemove',function(){
-	   						tooltipDiv.style("left", (d3.event.pageX - 34) + "px")
-      								  .style("top", (d3.event.pageY - 12) + "px");
-	   					})
-	   					.on('mouseout',function(){
-							$("#coordChartTooltipDiv").hide();	   						
-	   					});
-	   		
+	   		if(filter.length==0 || championModule.getChampionNameByID(champions[i]).toLowerCase().indexOf(filter)!=-1 || championModule.getChampionRoleByID(champions[i]).toLowerCase() == filter ){
+		   		var polylinePoints = "";
+		   		polylinePoints=polylinePoints+parseInt(winRateScale(data[i][0])+margin.left)+","+winRateYPosition+" ";
+				polylinePoints=polylinePoints+parseInt(pointsScale(data[i][1])+margin.left)+","+pointsYPosition+" ";
+				polylinePoints=polylinePoints+parseInt(scoreScale(data[i][2])+margin.left)+","+scoreYPosition;	   		
+		   		//line from winrate to champion points
+		   		svgContainer.append("polyline")
+		   					.attr("id","champLine"+champions[i])
+		   					.attr("class","coordChart-line")
+		   					.attr("points",polylinePoints)
+		   					.attr("stroke", coorChartColors[i%coorChartColors.length])
+		   					.on('mouseover',createParalChartTooltip(i,champions[i],chartCreator.dataCoordChart[i][0],chartCreator.dataCoordChart[i][1],chartCreator.dataCoordChart[i][2],true))
+		   					.on('mousemove',function(){
+		   						tooltipDiv.style("left", (d3.event.pageX - 34) + "px")
+	      								  .style("top", (d3.event.pageY - 12) + "px");
+		   					})
+		   					.on('mouseout',function(){
+								$("#coordChartTooltipDiv").hide();	   						
+		   					});
+		   		
 
-	   		//now insert the champion image
-	   		var championImgURL = championModule.getChampionSquareImgURL(championModule.getChampionKeyByID(champions[i]));
-	   		var imagemX1 = svgContainer.append("svg:image")
-	   					.attr("width",imgSize)
-	   					.attr("height",imgSize)
-	   					.attr("class","winRateImgChamp"+champions[i])
-	   					.attr("x",parseInt(winRateScale(data[i][0])+margin.left-(imgSize/2)))
-	   					.attr("y",winRateYPosition-imgSize)
-	   					.attr("xlink:href",championImgURL);	
+		   		//now insert the champion image
+		   		var championImgURL = championModule.getChampionSquareImgURL(championModule.getChampionKeyByID(champions[i]));
+		   		var imagemX1 = svgContainer.append("svg:image")
+		   					.attr("width",imgSize)
+		   					.attr("height",imgSize)
+		   					.attr("class","winRateImgChamp"+champions[i])
+		   					.attr("x",parseInt(winRateScale(data[i][0])+margin.left-(imgSize/2)))
+		   					.attr("y",winRateYPosition-imgSize)
+		   					.attr("xlink:href",championImgURL);	
 
-	   		var imagemX2 = svgContainer.append("svg:image")
-	   					.attr("width",imgSize)
-	   					.attr("height",imgSize)
-	   					.attr("class","pointsImgChamp"+champions[i])
-	   					.attr("x",parseInt(pointsScale(data[i][1])+margin.left-(imgSize/2)))
-	   					.attr("y",pointsYPosition-imgSize)
-	   					.attr("xlink:href",championImgURL);
+		   		var imagemX2 = svgContainer.append("svg:image")
+		   					.attr("width",imgSize)
+		   					.attr("height",imgSize)
+		   					.attr("class","pointsImgChamp"+champions[i])
+		   					.attr("x",parseInt(pointsScale(data[i][1])+margin.left-(imgSize/2)))
+		   					.attr("y",pointsYPosition-imgSize)
+		   					.attr("xlink:href",championImgURL);
 
-	   		var imagemX3 = svgContainer.append("svg:image")
-	   					.attr("width",imgSize)
-	   					.attr("height",imgSize)
-	   					.attr("class","scoreImgChamp"+champions[i])
-	   					.attr("x",parseInt(scoreScale(data[i][2])+margin.left-(imgSize/2)))
-	   					.attr("y",scoreYPosition-imgSize)
-	   					.attr("xlink:href",championImgURL);
-	   					
-	   	}
+		   		var imagemX3 = svgContainer.append("svg:image")
+		   					.attr("width",imgSize)
+		   					.attr("height",imgSize)
+		   					.attr("class","scoreImgChamp"+champions[i])
+		   					.attr("x",parseInt(scoreScale(data[i][2])+margin.left-(imgSize/2)))
+		   					.attr("y",scoreYPosition-imgSize)
+		   					.attr("xlink:href",championImgURL);
+		   					
+		   	}
+		}
 	}
 
    	//make it responsive!

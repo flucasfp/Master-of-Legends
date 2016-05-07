@@ -25,7 +25,6 @@
 			<ul class="nav navbar-nav">
 				<li><a class="activeNavbarItem" href="index.html">Home</a></li>
 				<li class="active"><a href="summoner.html">Summoner</a></li>
-				<li><a href="regions.html">Regions</a></li>
 				<li><a href="teambuilder.html">Team Builder</a></li>
 				<li><a href="about.html">About</a></li> 
 			</ul>
@@ -161,8 +160,14 @@
 					<div class="row">
 						<div class="col-sm-12">
 							<span class="labelMasteryOverview">Correlation between Win Rate, Champion Points and LegendScore*:</span>
+							<br><br>
+							<div id="paralCoordFilterLabel">Filter by Champion Name or Role:</div>
+							<div id="paralCoordFilterDiv"><input type='text' id="paralCoordFilter" class="form-control" oninput='chartCreator.makeParalCoordChart()' placeholder="i.e. Caitlyn, Tank, ...">
+
+							</div>	
 						</div>
 					</div>
+
 
 					<div class="row">
 						<div id="coordChartContainer" class="col-sm-12">
