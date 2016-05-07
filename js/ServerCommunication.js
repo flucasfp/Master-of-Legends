@@ -1,6 +1,7 @@
 var serverCommunication=(function(){
     var squareChampionImageUrl = "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/champion";
     var squareChampionImageType =".png";
+    //var serverURL = "http://localhost:5000/?";
     var serverURL = "http://masteroflegends.pythonanywhere.com/?";
 
     function getRandomSplashURL(callbackFunction){
@@ -20,8 +21,12 @@ var serverCommunication=(function(){
         
         $.ajax(serverURL+"getSummonerInfo=true&summonerName="+summonerName+"&summonerRegion="+summonerRegion).done(function(data){
             data = JSON.parse(data);
-            data['region'] = summonerRegion.toUpperCase();
-            callbackFunction(data);
+            if(data.hasOwnProperty('status')){
+                callbackFunction("error");
+            }else{
+                data['region'] = summonerRegion.toUpperCase();
+                callbackFunction(data);                
+            }
         }).error(function(data){callbackFunction("error");});
     };
 
@@ -29,7 +34,11 @@ var serverCommunication=(function(){
 
         $.ajax(serverURL+"getSummonerLeague=true&summonerID="+summonerID+"&summonerRegion="+summonerRegion).done(function(data){
             data = JSON.parse(data);
-            callbackFunction(data);
+            if(data.hasOwnProperty('status')){
+                callbackFunction("error");
+            }else{
+                callbackFunction(data);
+            }
         }).error(function(data){callbackFunction("error");});
         
     };
@@ -50,10 +59,14 @@ var serverCommunication=(function(){
         ).then(
             function(data1,data2,data3){
                 championModule.championsInfo = JSON.parse(data3[0]);
-                callbackFunction(JSON.parse(data1[0]),JSON.parse(data2[0]));                
+                var matches = JSON.parse(data2[0]);
+                if(matches.hasOwnProperty('status')){
+                    matches = [];
+                }
+                callbackFunction(JSON.parse(data1[0]),matches);
             },
             function(data1,data2,data3){
-                console.log('Failed to load resources! :(');               
+                console.log('Failed to load resources! :(');             
             }
         )
     }
@@ -68,15 +81,25 @@ var serverCommunication=(function(){
         
         $.ajax(url1)
         .done(function(data){
-            rankedInfo1 = JSON.parse(data);
+            var serverResponse = JSON.parse(data);
+            if(serverResponse.hasOwnProperty('status')){
+                console.log("No ranked stats from "+seasons[0]);
+            }else{
+                rankedInfo1 = serverResponse;
+            }
         }).error(function(data){
-            console.log("No ranked stats from "+seasons[0]);
+                console.log("Failed to load resources :(");
         }).complete(function(data){
                         $.ajax(url2)
                             .done(function(data){
-                                rankedInfo2 = JSON.parse(data);
+                                var serverResponse = JSON.parse(data);
+                                if(serverResponse.hasOwnProperty('status')){                                    
+                                    console.log("No ranked stats from "+seasons[1]);
+                                }else{
+                                    rankedInfo2 = serverResponse;
+                                }
                             }).error(function(data){
-                                console.log("No ranked stats from "+seasons[1]);
+                                console.log("Failed to load resources :(");
                             }).complete(function(data){
                                 for(var i=0;i<rankedInfo1.champions.length;i++){
                                     if(rankedInfo1.champions[i].id!=0){

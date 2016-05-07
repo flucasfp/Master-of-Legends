@@ -167,7 +167,7 @@ var comparator=(function(){
 
 		$(chartDivID).highcharts({
 	        chart: {
-	        	height: ((dataLength * (barHeight+barPadding))+75),
+	        	height: (( (dataLength+1) * (barHeight+barPadding))+75),
 	            type: 'bar',
 	            marginTop:30,
 	            marginLeft: 80,

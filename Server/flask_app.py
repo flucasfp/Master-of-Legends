@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
 from datetime import timedelta
 from flask import Flask, make_response, request, current_app
 from functools import update_wrapper
-import urllib2
+import requests
 
 app = Flask(__name__)
 
@@ -48,14 +49,14 @@ def crossdomain(origin=None, methods=None, headers=None,
 
 
 
-
-
-
 def getRiotAPIKey():
     return "<key>"
 
 def sendRequestToRiot(url):
-    return urllib2.urlopen(url).read()
+    r = requests.get(url)
+    if(r.status_code!=200):
+        return '{"status":"error"}'
+    return r.text.encode('utf-8')
 
 
 def getChampionsSkinsInfo():
@@ -71,8 +72,13 @@ def getSummonerLeague(summonerID, summonerRegion):
     return sendRequestToRiot(getSummonerLeagueURL)
 
 
+def getSummonerRankedStats(summonerID,summonerRegion,season):
+
+    getSummonerRankedStatsURL = "https://"+summonerRegion+".api.pvp.net/api/lol/"+summonerRegion+"/v1.3/stats/by-summoner/"+summonerID+"/ranked?season="+season+"&api_key="+getRiotAPIKey()
+    return sendRequestToRiot(getSummonerRankedStatsURL)
+
 def getSummonerMastery(summonerID,summonerRegion):
-    maxChampions = 500
+    maxChampions = 200
     platforms = {}
     platforms['br'] = 'br1'
     platforms['eune'] = 'eune1'
@@ -116,6 +122,8 @@ def index():
         return getSummonerMatches(request.args.get('summonerID'),request.args.get('summonerRegion'))
     elif( request.args.get('getChampionsTagsInfo') == 'true'):
         return getChampionsTagsInfo(request.args.get('summonerRegion'))
+    elif( request.args.get('getSummonerRankedStats') == 'true'):
+        return getSummonerRankedStats(request.args.get('summonerID'),request.args.get('summonerRegion'),request.args.get('season'))
 
     return "{'invalidParameters':'true'}"
 
