@@ -373,3 +373,15 @@ p{
 .comparatorXLabel{
 	text-align: right;
 }
+#paralCoordFilterLabel{
+	float:left;
+	margin-right:5px;
+}
+#paralCoordFilterDiv{
+	width:200px;
+	float:inherit;
+}
+#paralCoordFilter{
+	text-align:center;
+	height: 25px
+}
