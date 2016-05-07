@@ -199,7 +199,7 @@ var comparator=(function(){
 	            categories: (function(){ 
 	            				var championLabelArray = [];
 	            				for(var i=0;i<dataLength;i++){
-	            					championLabelArray.push("<div class='comparatorXLabel'><img class='comparatorImg' src='"+championModule.getChampionSquareImgURL(championModule.getChampionKeyByID(+dataChampions[i]))+"'></img> <br>"+championModule.getChampionNameByID(+dataChampions[i]))+"</div>";
+	            					championLabelArray.push("<div class='comparatorXLabel'><img class='comparatorImg' src='"+championModule.getChampionSquareImgURL(championModule.getChampionKeyByID(+dataChampions[i]))+"'></img> <br><span class='comparatorSpan'>"+championModule.getChampionNameByID(+dataChampions[i]))+"</span></div>";
 	            				}
 	            				return championLabelArray;
 	            			})(),

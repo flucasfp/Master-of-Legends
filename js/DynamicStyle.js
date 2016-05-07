@@ -46,7 +46,8 @@ var dynamicStyleModule=(function(){
 				$("#masteryInfoLabel").text("DRAVEN Visualization")
 					.css("margin-top","20px")
 					.css("margin-bottom","10px")
-					.css("font-size","30px");			
+					.css("font-size","30px");
+				$(".comparatorSpan").each(function(){$(this).text("Draven");})			
 		};
 			clicks++;
 		}
