@@ -2,11 +2,16 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Master of Legends</title>
+		<title>Master of Legends - Team Builder</title>
 		<script   src="https://code.jquery.com/jquery-1.12.3.min.js"   integrity="sha256-aaODHAgvwQW1bFOGXMeX+pC4PZIPsvn2h1sArYOhgXQ="   crossorigin="anonymous"></script>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.min.js"></script>
+		<script src="http://code.highcharts.com/highcharts.js"></script>
+		<script src="https://code.highcharts.com/modules/data.js"></script>
+		<script src="https://code.highcharts.com/modules/drilldown.js"></script>
+		<script src="https://code.highcharts.com/modules/no-data-to-display.js"></script>
 
 		<link rel="stylesheet" href="css/style.css">
 	</head>
@@ -35,7 +40,128 @@
 		<div id="masterContainer" class="container">
 			<div id="outerContainer" class="row">
 				<div id="innerContainer" class="col-sm-12">
-					Team Builder
+					
+
+					<div id='tbTitleDiv' class="row">
+						<div class="col-sm-12">
+							<span id='tbTitle'>
+								Unless you are Amumu, type the Summoner Name of you and four friends
+							</span><br>
+							<span id='tbSubTitle'>
+								We well see which lane that each one should go!
+							</span>
+							<br><br>
+							<div id="tbRegionSelectDiv">
+								<div id="tbRegionSelectLabel">Region:</div>
+								<select id="tbRegionSelect" class="form-control">
+								  <option class="form-control" value="br">BR</option>
+								  <option class="form-control" value="eune">EUNE</option>
+								  <option class="form-control" value="euw">EUW</option>
+								  <option class="form-control" value="jp">JP</option>
+								  <option class="form-control" value="kr">KR</option>
+								  <option class="form-control" value="lan">LAN</option>
+								  <option class="form-control" value="las">LAS</option>
+								  <option class="form-control" value="na">NA</option>
+								  <option class="form-control" value="oce">OCE</option>
+								  <option class="form-control" value="ru">RU</option>
+								  <option class="form-control" value="tr">TR</option>
+								</select>
+							</div>
+
+							<!--div class="col-sm-1">
+							</div-->
+							<div class="col-sm-4">
+								<form id="tbInputForm" onSubmit="teamBuilder.build(); return false;">
+									<input id="summonerName1" type='text' class='form-control tbInputText' placeholder='Summoner1'><br>
+									<input id="summonerName2" type='text' class='form-control tbInputText' placeholder='Summoner2'><br>
+									<input id="summonerName3" type='text' class='form-control tbInputText' placeholder='Summoner3'><br>
+									<input id="summonerName4" type='text' class='form-control tbInputText' placeholder='Summoner4'><br>
+									<input id="summonerName5" type='text' class='form-control tbInputText' placeholder='Summoner5'><br>
+									<button id="tbSubmitButton" class="btn btn-primary" type="submit"><span>Let Caitlyn investigate!</span></button>
+								</form>
+							</div>
+
+							<div id="tbAlertsDiv" class="col-sm-8">
+								<div id="tbAlertLoading" class="tbAlert alert alert-info">
+									<i class="fa fa-spinner fa-pulse fa-fw margin-bottom"></i><span><b>Loading</b></span>
+								</div>
+								<div id="tbAlertError" class="tbAlert alert alert-danger">
+									<span>Error!</span>
+								</div>
+							</div>
+
+							<div id="tbDetails"class="col-sm-8">
+								<div class='tbDetailSummoner' id="tbDetailSummoner1">
+									<span id="summonerNameSpan1"></span><span class="tbDetailRoleSpan" id="tbDetailRole1"></span>
+									<div id='tbDetailChampionsDiv1' class='tbDetailChampionsDiv'>
+										<span id="tbDetailChampions">Champions:</span>
+										
+									</div>
+								</div>
+								<hr>
+								<div class='tbDetailSummoner' id="tbDetailSummoner2">
+									<span id="summonerNameSpan2"></span><span class="tbDetailRoleSpan" id="tbDetailRole2"></span>
+									<div id='tbDetailChampionsDiv2' class='tbDetailChampionsDiv'>
+										<span id="tbDetailChampions">Champions:</span>
+										
+									</div>
+								</div>
+								<hr>
+								<div class='tbDetailSummoner' id="tbDetailSummoner3">
+									<span id="summonerNameSpan3"></span><span class="tbDetailRoleSpan" id="tbDetailRole3"></span>
+									<div id='tbDetailChampionsDiv3' class='tbDetailChampionsDiv'>
+										<span id="tbDetailChampions">Champions:</span>
+									</div>
+								</div>
+								<hr>
+								<div class='tbDetailSummoner' id="tbDetailSummoner4">
+									<span id="summonerNameSpan4"></span><span class="tbDetailRoleSpan" id="tbDetailRole4"></span>
+									<div id='tbDetailChampionsDiv4' class='tbDetailChampionsDiv'>
+										<span id="tbDetailChampions">Champions:</span>
+										
+									</div>
+								</div>
+								<hr>
+								<div class='tbDetailSummoner' id="tbDetailSummoner5">
+									<span id="summonerNameSpan5"></span><span class="tbDetailRoleSpan" id="tbDetailRole5"></span>
+									<div id='tbDetailChampionsDiv5' class='tbDetailChampionsDiv'>
+										<span id="tbDetailChampions">Champions:</span>
+									
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-sm-1">
+						</div>
+						<!--tb stands to team builder-->
+						<div id="tbTopDiv" class="col-sm-2 tbDiv">
+							<img style="width:100%" id="tbTopImg" class="tbImg"></img>
+							<div class='tbLabelDiv' id="tbLabelDivId1"><label class="tbLabel" id="tbTopLabel"></label></div>
+						</div>
+						<div id="tbJungleDiv" class="col-sm-2 tbDiv">
+							<img style="width:100%" id="tbJungleImg" class="tbImg"></img>
+							<div class='tbLabelDiv' id="tbLabelDivId2"><label class="tbLabel" id="tbJungleLabel"></label></div>
+						</div>
+						<div id="tbMidDiv" class="col-sm-2 tbDiv">
+							<img style="width:100%"  id="tbMidImg" class="tbImg"></img>
+							<div class='tbLabelDiv' id="tbLabelDivId3"><label class="tbLabel" id="tbMidLabel"></label></div>
+						</div>
+						<div id="tbBotCarryDiv" class="col-sm-2 tbDiv">
+							<img style="width:100%"  id="tbBotCarryImg" class="tbImg"></img>
+							<div class='tbLabelDiv' id="tbLabelDivId4"><label class="tbLabel" id="tbBotCarryLabel"></label></div>
+						</div>
+						<div id="tbBotSupDiv" class="col-sm-2 tbDiv">
+							<img style="width:100%"  id="tbBotSupImg" class="tbImg"></img>
+							<div class='tbLabelDiv' id="tbLabelDivId5"><label class="tbLabel" id="tbBotSupLabel"></label></div>
+						</div>
+						
+						<div class="col-sm-1">
+						</div>
+					</div>
+
 				</div>
 			</div>
 		</div>
@@ -43,9 +169,16 @@
 	<script>
 		var page='teambuilder';
 	</script>
+	<script src="js/Champion.js"></script>
+	<script src="js/Matches.js"></script>
+	<script src="js/crossfilter.min.js"></script>
 	<script src="js/cookie.js"></script>
+	<script src="js/LocationSearcher.js"></script>
 	<script src="js/ServerCommunication.js"></script>
 	<script src="js/DynamicStyle.js"></script>
+	<script src="js/Comparator.js"></script>
+	<script src="js/Summoner.js"></script>
+	<script src='js/TeamBuilder.js'></script>
 	<script src="js/MainController.js"></script>
 	</body>
 </html>

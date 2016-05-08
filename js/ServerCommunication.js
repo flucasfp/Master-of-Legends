@@ -49,7 +49,7 @@ var serverCommunication=(function(){
             callbackFunction(data);
         }).error(function(data){callbackFunction("error");});
     }   
-
+    
     function getMasteryAndMatches(summonerID, summonerRegion, callbackFunction){
         //This gets Champions info too!
         $.when(

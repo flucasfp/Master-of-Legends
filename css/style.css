@@ -385,3 +385,80 @@ p{
 	text-align:center;
 	height: 25px
 }
+.tbDiv{
+	padding:3px;
+	text-align: center;
+}
+.tbImg{
+	border: 1px white solid;
+}
+.tbLabel{
+
+}
+#tbTitleDiv{
+	text-align: center;
+}
+#tbTitle{
+	font-size:24px;
+}
+#tbSubTitle{
+	font-size:18px;
+}
+#tbInputForm{
+	margin:20px;
+}
+.tbInputText{
+	text-align: center;
+	font-size:25px;
+	height: 40px;
+	margin-bottom: 20px;
+}
+#tbDetails{
+	margin-top:15px;
+	text-align: left;
+	font-size:20px;
+	display:none;
+}
+#tbDetails img{
+	width:45px;
+	height: 45px;
+	border:1px solid white;
+}
+.tbDetailSummoner{
+	display: block;
+    width: 100%;
+    height: 40px;
+    margin-bottom: 20px;
+}
+.tbDetailRoleSpan{
+	margin-right:5px;
+	font-size:30px;
+	color:#337AB7;
+}
+
+#tbRegionSelectDiv{
+	text-align: center;
+}
+#tbRegionSelectLabel{
+	display: inline;
+}
+#tbRegionSelect{
+	display: inline;
+	width:100px;
+}
+.tbDetailChampionsDiv{
+	float:right;
+}
+#tbAlertsDiv{
+	margin-top:20px;
+}
+.tbAlert{
+	display:none;
+}
+.tbLabelDiv{
+	background-color: #313745;
+	width: 100%;
+	position: relative;
+	bottom: 45px;
+	border:1px solid white;
+}
