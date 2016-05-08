@@ -35,26 +35,183 @@
 			<div id="outerContainer" class="row">
 				<div id="innerContainer" class="aboutPageContent" class="col-sm-12">
 					<h2><p><b>Overview</b></h2>
-					<p><b>Master of Legends</b> is a Web Application created for <a href="https://developer.riotgames.com/discussion/announcements/show/eoq3tZd1">The Riot Games API Challenge 2016</a>.
-					<p>The goal of this application is visualize and analyze <b>Champion Mastery</b> and related data in the following ways:
+					<h4><p><b>Master of Legends</b> is a Web Application originally created for <a href="https://developer.riotgames.com/discussion/announcements/show/eoq3tZd1">The Riot Games API Challenge 2016</a>.</h4>
+					<p>The goal of this application is to visualize and to analyze <b>Champion Mastery</b> and related data.
+
+					<p>Technical information and information about how to run it locally can be found at the <a href="https://github.com/flucasfp/Master-of-Legends">Readme</a> document in the GitHub repository.
+					
+					<p>While making this application, I had some design goals in mind:
 					<div class="aboutPageList">
 						<ul style="list-style-type:circle">
-						  <li>Sem</li>
-						  <li>Spoilers</li>
-						  <li>Ainda</li>
+						  <li>The application will be simple enough to run in the GitHub Pages</li>
+						  <li>The application will be interactive to the user</li>
+						  <li>The application will be dynamic</li>
+						  <li>The application will have a clean interface</li>
+						  <li>All the data the application uses is from the Riot Games API</li>
+						  <li>The application will not need a database</li>
+						  <li>Even simple, the application will be interesting enough to make the user waste some time exploring it</li>
 						</ul>
 					</div>
-					<p>Explain each tab
+							
 					<h2><p><b>Librarys</b></h2>
 					<P>The external librarys that I used here are:	
 					<ul style="list-style-type:circle">
-						<li><a href="https://jquery.com/">jQuery</a></li>
-						<li><a href="http://getbootstrap.com/">Bootstrap</a></li>
-						<li><a href="https://github.com/js-cookie/js-cookie">js.Cookie</a></li>
-						<li><a href="http://www.highcharts.com/">Highcharts</a></li>
-						<li><a href="http://crossfilter.github.io/crossfilter/">Crossfilter</a></li>
-						<li><a href="http://fortawesome.github.io/Font-Awesome/">Font-Awesome</a></li>
+						<li><b><a href="https://jquery.com/">jQuery</a></b>: The best library to make HTML manipulation and asynchronous requests</li>
+						<li><b><a href="http://getbootstrap.com/">Bootstrap</a></b>: Amazing HTML/CSS and JavaScript framework to make responsive Web Pages</li>
+						<li><b><a href="https://fortawesome.github.io/Font-Awesome/">Font Awesome</a></b>: Rich collection of Icons</li>
+						<li><b><a href="https://d3js.org/">D3.js</a></b>: Amazing library to help with Data Visualization by DOM manipulation</li>
+						<li><b><a href="http://www.highcharts.com/">HighCharts</a></b>: Library to easily create responsive charts (free to use for a non-commercial project like this)</li>
+						<li><b><a href="http://crossfilter.github.io/crossfilter/">Crossfilter</a></b>: Fast n-dimensional filtering and grouping of records</li>
 					</ul>
+					<br>
+					<p>Now that you know what I used to build this, let's walk together through the application and see what it can do!
+
+					<h2><p><b>Application Walkthrough</b></h2>
+					<br>
+					<h3><p>Home Page</h3>
+					<p> The first thing you see when you go to this application is the Home Page:
+					<br>
+					<img src='img/doc/doc0.png'></img>
+					<br>
+					<p> It has fields where the user enter his Summoner Name and Region. <br>
+					<p>	It also shows a random background (I'm already using the Riot Games API to get it).
+					<br>
+					<p> When the user enter his informations and click the button, he is redirected to the Summoner Page.
+					<br><br>
+					<h3><p>Summoner Page</h3>
+					<p> To see what this page has to offer, let's use myself as an example.
+					<p> I typed my Summoner Name 'Luke Hawk' and clicked in 'BR'.<br>
+					<p> After the loading, the first thing we see is an Overview of my Summoner, my top 3 Mastered Champions and my top 3 Mastered Champions with Chest Available.
+					<p style='color:#313745'> Click tree times in the Summoner Icon :D<br><br>
+					<img src='img/doc/doc1.png'></img>
+					<br><br>
+					<p> The next thing we see is a collapsile panel with the option to see all the Champions that I have Champion Mastery Points. The blue progress bar represents the Level Progress you made with the champion, and by putting the mouse over the progress bar, you can see the Mastery Points to next Level.
+					<p> Bootstrap helped me to make this collapsile panel!
+					<br><br>
+					<img src='img/doc/doc2.png'></img>
+					<br><br>
+					<p> We can filter the List by the Champion role. The roles are Assassin, Fighter, Mage, Support, Tank and Marksman. i.e. filter by Marksman:
+					<br><br>
+					<img src='img/doc/doc3.png'></img>
+					<br><br>
+					<p> By clicking in 'Chart' below 'Show all champions', we can also see a Bar Chart showing the Level 5, 4 and 3 Champions comparing the Champion Points I have. With the mouse over a bar, we will see a tooltip with details. The Champion name and description will be in the language of the server you clicked in the Home Page, that's why in this example we'll see the tooltip in Portuguese.
+					<p> The Chart is made with HighCharts.
+					<br><br>
+					<img src='img/doc/doc4.png'></img>
+					<br><br>
+					<p> The next thing we see is a Pie Chart (made with HighCharts). This Pie Chart shows the distribution of your Champion Points by the main Role of the Champions. Remember, the roles are Assassin, Fighter, Mage, Support, Tank and Marksman.
+					<p>One of the most important things in Data Visualization is Linking Data! Instead of just showing the Data as the API brings, I tried to think in ways to link the Champion Mastery Data with the others available informations. 
+					<p> In this especific Chart I linked the Champion Mastery information with the Champion Information (all from the Riot API). When you click in a slice of the Pie Chart, you can see the Champions from that Role. Images below:
+					<br><br>
+					<img src='img/doc/doc5.png'></img>
+					<img src='img/doc/doc6.png'></img>
+					<br><br>
+					<p> The next thing we see is another Pie Chart. The information I linked is this Chart is the Champion Mastery Data and the Summoner's Matchlist. For this I considered Ranked Team Builder Draft, Ranked Solo and Ranked Team in Summoner's Rift from Seasons 2015 and 2016 only.
+					<p>The Riot Games API gives a Matchlist with the played Champion and Lane information for each match. 
+					<p> This was a little complicated. To make this chart I grouped the Lanes (Top, Jungle, Mid, Bot Carry and Bot Support), and for each Lane, I get the Champions played and the number of games played by this Champion in this Lane. This is needed because I wanted to distribute the Champion Points for each Champion in each Lane. i.e. I have 1000 Champion Points with Caitlyn and I played 9 games positioned at Bot Carry and 1 game at Mid. So my algorithm considers that I have 900 Caitlyn Champion Points in Bot Carry and 100 Caitlyn Champion Points in Mid.
+					<p> We can see images below (the second is when I click in Bot Carry):
+					<br><br>
+					<img src='img/doc/doc7.png'></img>
+					<img src='img/doc/doc8.png'></img>
+					<br><br>
+					<p>Data Visualization is not only a tool to see Data, it's also a tool to <b>answer</b> questions!
+					<p>In the Charts above, we can answer questions like:
+					<ul style="list-style-type:circle">
+						<li>"What are the Champions that I have more Champions Points?"</li>
+						<li>"What Marksman I have more Champion Points?"</li>
+						<li>"What are the Champion Roles that I have more Champions Points?"</li>
+						<li>"What are the Lanes that I have more Champion Points?"</li>
+					</ul>
+					<p> Those questions are interestings, howsoever they're simple.
+					<p> But let's dive in a more complicated question:
+					<ul style="list-style-type:circle">
+						<li>"If I have a big Champion Points number for a Champion, does it means that I am good at that Champion?"</li>
+					</ul>
+					<p>Let's use Data Visualization to try to aswer this question!
+					<p>The next Chart is probably the less usual and more complicated here. It's called <a href="https://en.wikipedia.org/wiki/Parallel_coordinates">Parallel Coordinates</a> Visualization and it's great to visualize <a href="https://en.wikipedia.org/wiki/Correlation_and_dependence">Correlation</a>.
+					<p><b>"Luke, what is Correlation?"</b>, you could ask.
+					<p>Poorly talking, Correlation is a type of statistical relationship involving dependence between data.
+					<p>To aswer the question above, I considered three informations:
+					<ul style="list-style-type:circle">
+						<li>Win Rate for each Champion</li>
+						<li>Champion Points for each Champion</li>
+						<li>Average KDA ((Kills+Assists)/Deaths) for Ranked Seasons 2015 and 2016</li>
+					</ul>
+					<p>This comparison is not much precise because I only got information about Ranked Stats, and you can get Champion Points in Normal Games aswell, but I think it's a good measure.
+					<p>In short, what I wanna see is if the higher the Champion Points, the greater the Win Rate and KDA (Positive Correlation).
+					<p>Note that what I'm comparing is the Correlation between Champion Points and Performance for Each Summoner. For a Summoner A you could see a Positive Correlation, but for another Summoner B, you could see a Negative Correlation or no Correlation.
+					<p>If the Summoner has a Positive Correlation between the considered variables, we should see that the higher the Champion Points, the greater is the Win Rate and KDA:
+					<br><br>
+					<img src='img/doc/doc9.png'></img>
+					<br><br>
+					<p>If the Summoner has a Negative Correlation bewtween the considered variables, we should see that the higher the Champion Points, the fewer is the Win Rate and KDA.
+					<p>In this example image we can see a Negative Correlation between Win Rate and Champion Points, a Negative Correlation between Champions Points and Average KDA, but a Positive Coorelation between Win Rate and Average KDA (imagine the Chart without the Champion Points Coordinate).
+					<br><br>
+					<img src='img/doc/doc10.png'></img>
+					<br><br>
+					<p>If you can't see a pattern in the lines, we can say that there is no Correlation between the observed variables.
+					<p>Now let's take a look at my Paralell Coordinates Chart:
+					<br><br>
+					<img src='img/doc/doc11.png'></img>
+					<br><br>
+					<p>It's a little messy, right?
+					<p>To help the user to visualize the Chart, when you put yout mouse over a line, you can see the information of the Champion and the Champion image goes in front of other. Also, you can filter by Champion name or Champion Role, like this:
+					<br><br>
+					<img src='img/doc/doc12.png'></img>
+					<br><br>
+					<p> To make this Chart, I used D3.js to make DOM/SVG manipulation and Scales and used Crossfilter to group and filter the Data.
+					<br><br>
+					<p> The final feature of the Summoner's Page is the Champion Mastery Comparator!
+					<p> If you want to compare your Champion Points with the Champion Points of a friend, this is the perfect feature for you!.
+					<p> In this Comparator, we can type Summoner's Names from the Region specified in the Home Page.
+					<p> For this visualization, I'm using the Percent Stacked Bar created with HighCharts.
+					<p> Example: I'll compare my Champion Mastery Points with my friends Kamui Iveel and Palaha.
+					<br><br>
+					<img src='img/doc/doc13.png'></img>
+					<br><br>
+					<p>With that, I can see, for example, that I have much more Kalista Champion Points than Kamui and Palaha, but Palaha has more Thresh Champion Points.
+
+					<br><br>
+					<h3><p>Team Builder Page</h3>
+					<p>The Team Builder is a Page where you insert five Summoner's Names from the specified Region and it <b>analyze</b> the Champion Mastery Points for each Summoner and say which lane each Summoner should go, also informing the recommended Champions.
+					<p>In the image, I typed my Summoner Name and the Summoner Name of 4 friends:
+					<br><br>
+					<img src='img/doc/doc14.png'></img>
+					<br><br>
+					<p>Remember the Champion Points by Position/Lane Chart we saw early?
+					<p>I'm using that data to make this decision.
+					<p>When I first had this ideia, I thought it would be simple, but it's more complicated than I expected. It's not that simple because the same Summoner can have more Champions Points for multiple lanes, and then I have to decide which lane allocate this champion. I solved this problem using a greedy strategy: given the 5 Summoners and the 5 Lanes, sort the Summoners for each Lane according to the Champion Points the Summoner has for each lane. Consider only the first Summoners of each Lane and allocate the Summoner X that has more Champion Points in Lane Y. Remove Summoner X and Lane Y from the initial List and do it again till we have one Summoner for each Lane.
+
+					<br><br>
+					<h2><p><b>Lessons and Dificulties</b></h2>
+					<br>
+					<p>There are a couple things I faced while doing this Application that I'd like to share.
+					<ul style="list-style-type:circle">
+						<li>When I first thought about this Application, I decided to not use any Server. The application would have to communicate directly to Riot API Server and get its information.
+							But there's a problem with this approach: I can't hide my Developer Riot API Key. One solution would be use the Key as an input, but this way only Developers could use Master of Legends. 
+							So I learned that if I want to make a public Web Application, I have to use something between the Client Side and the Riot API Server that <b>manage that communication</b>.
+						</li>
+						<li>
+							<b>Modularity is important!</b> This is not something that I learned here, but It's something that showed its value. 
+							When I decide to make a Server to manage the communication between Client and Riot API Server, I already had a working application that receive the Developer Key as an argument. Since I was using <b><a href="http://www.adequatelygood.com/JavaScript-Module-Pattern-In-Depth.html">Module Pattern</a></b>, it was easy to change the way my Application communicate with the server, I only had to change one file (ServerCommunication.js).
+						</li>
+						<li>
+							<b>Cross-origin resource sharing</b>. This is something new for me that I faced while creating the Server. To solve it, I used <a href="http://flask.pocoo.org/snippets/56/">this</a> in my Flask Server. You can see more about it <a href="https://en.wikipedia.org/wiki/Cross-origin_resource_sharing">here</a>.
+						</li>
+					</ul>
+
+
+					<br>
+					<h2><p><b>About me</b></h2>
+					<p>Hey, there! My name is Lucas, but you can call me Luke. I'm 20, Brazilian and I'm graduating in Computer Science.
+					<p>You can find me in the silver lands of Summoner's Rift in Brazilian Server by the name of Luke Hawk.
+					<p>Sorry for any English mistake, it's not my native language, but I tried hard to write all of this correct :)
+					<p>And, hey, there is an easter egg in this site, try clicking around things :)
+					<p>Have anything to tell me? Fell free to contact me by email: lukehawklol@outlook.com , I'll be happy in replying you.
+					<br><br><br>
+					<hr style="width:100%">
+					<div style="text-align:center"><p>Master of Legends isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.
+					</div>
 
 				</div>
 			</div>

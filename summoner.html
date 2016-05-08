@@ -150,21 +150,20 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-sm-6">
+						<div class="col-sm-6" style="text-align: right;font-size:10px">
 						</div>
 						<div class="col-sm-6" style="text-align: right;font-size:10px">
-							*Only Ranked Team Builder Draft, Ranked Solo and Ranked Team in Summoner's Rift from Seasons 2015 and 2016 are considered. See <a href="about.html">About</a> for complete information.
+							*Given your matches, we distribute the Champion Points according to the lanes you played with the Champions. Only Ranked Team Builder Draft, Ranked Solo and Ranked Team in Summoner's Rift from Seasons 2015 and 2016 are considered. See <a href="about.html">About</a> for complete information.
 						</div>
 					</div>
 					<hr>
 					<div class="row">
 						<div class="col-sm-12">
-							<span class="labelMasteryOverview">Correlation between Win Rate, Champion Points and LegendScore*:</span>
+							<span class="labelMasteryOverview">Correlation between Win Rate, Champion Points and Average KDA:</span>
 							<br><br>
 							<div id="paralCoordFilterLabel">Filter by Champion Name or Role:</div>
 							<div id="paralCoordFilterDiv"><input type='text' id="paralCoordFilter" class="form-control" oninput='chartCreator.makeParalCoordChart()' placeholder="i.e. Caitlyn, Tank, ...">
-
-							</div>	
+							</div>
 						</div>
 					</div>
 
@@ -172,6 +171,12 @@
 					<div class="row">
 						<div id="coordChartContainer" class="col-sm-12">
 
+						</div>
+					</div>
+					<br>
+					<div class="row" style="text-align: left;font-size:12px">
+						<div class="col-sm-12">
+							Want to know all about it and how to read the chart above? See <a href="about.html">About</a> page for complete information.
 						</div>
 					</div>
 					<hr>
@@ -206,7 +211,6 @@
 	<script src="js/Matches.js"></script>
 	<script src="js/ChartCreator.js"></script>
 	<script src="js/crossfilter.min.js"></script>
-	<script src="js/cookie.js"></script>
 	<script src="js/LocationSearcher.js"></script>
 	<script src="js/ServerCommunication.js"></script>
 	<script src="js/DynamicStyle.js"></script>

@@ -462,3 +462,11 @@ p{
 	bottom: 45px;
 	border:1px solid white;
 }
+.aboutPageContent{
+	padding-right: 25px;
+}
+
+.aboutPageContent img{
+	max-width:600px;
+	border: 1px white solid;
+}
