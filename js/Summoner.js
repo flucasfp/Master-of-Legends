@@ -40,9 +40,8 @@ var summonerModule =(function(){
 		}
 	}
 
-	function getLegendScore(winMatches,totalMatches,championPoints){
-//		return totalMatches;
-		return parseInt(championPoints/totalMatches*(winMatches));
+	function getLegendScore(winMatches,totalMatches,championPoints,kda){
+		return kda;
 	}
 	function showSummonerParalCoordChart(champions,data){
 		//IDs:
@@ -89,8 +88,8 @@ var summonerModule =(function(){
 	function showSummonerPieCharts(){
 		var divRolePieChart = "rolePiechart";
 		var divLanePieChart = "lanePiechart";
-		var rolePieChartTitle = summonerInfo[accessKeySummonerInfo].name+"'s Champion Points by Role";
-		var lanePieChartTitle = summonerInfo[accessKeySummonerInfo].name+"'s Champion Points by Position*";
+		var rolePieChartTitle = summonerInfo[accessKeySummonerInfo].name+"'s Champion Points by Champion Role";
+		var lanePieChartTitle = summonerInfo[accessKeySummonerInfo].name+"'s Champion Points by Played Position*";
 		var roleData = {series:[{name:'Roles',colorByPoint:true,data:[]}],drilldown:{series:[]}};
 		var laneData = {series:[{name:'Lanes',colorByPoint:true,data:[]}],drilldown:{series:[]}};
 		
@@ -163,9 +162,17 @@ var summonerModule =(function(){
 
 		var championWinGroup = championDimension.group().reduceSum(function(d){ return d.stats.totalSessionsWon});
 		var championTotalGroup = championDimension.group().reduceSum(function(d){ return d.stats.totalSessionsPlayed});
-
+		var kdaGroup = championDimension.group().reduceSum(function(d){
+			if(d.stats.totalDeathsPerSession!=0){
+				return ((d.stats.totalChampionKills+d.stats.totalAssists)/(d.stats.totalDeathsPerSession))/(championDimension.filterExact(d.id).top(Infinity).length)
+			}else{
+				return ((d.stats.totalChampionKills+d.stats.totalAssists)/1)/(championDimension.filterExact(d.id).top(Infinity).length)
+			}
+		});
+		
 		var winValuesArray = championWinGroup.top(Infinity);
 		var playedValuesArray = championTotalGroup.top(Infinity);
+		var kdaValuesArray = kdaGroup.top(Infinity);
 
 		var dataObject = {};
 		for(var i=0;i<winValuesArray.length;i++){
@@ -173,6 +180,9 @@ var summonerModule =(function(){
 		}
 		for(var i=0;i<playedValuesArray.length;i++){
 			dataObject[playedValuesArray[i].key].played = playedValuesArray[i].value;		
+		}
+		for(var i=0;i<playedValuesArray.length;i++){
+			dataObject[kdaValuesArray[i].key].kda = kdaValuesArray[i].value;
 		}
 
 		championsArray = [];
@@ -182,12 +192,12 @@ var summonerModule =(function(){
 			championsArray.push(playedValuesArray[i].key);
 			var winMatches = dataObject[playedValuesArray[i].key].win;
 			var totalMatches = dataObject[playedValuesArray[i].key].played;
-			var championPoints = getChampionPointsByChampionID(playedValuesArray[i].key); 
+			var championPoints = getChampionPointsByChampionID(playedValuesArray[i].key);
 
 			dataArray.push( [
 								parseFloat((winMatches/totalMatches).toFixed(4)),
 								championPoints,
-								getLegendScore(winMatches,totalMatches,championPoints)								
+								getLegendScore(winMatches,totalMatches,championPoints,dataObject[playedValuesArray[i].key].kda)								
 							]
 						 );
 		}

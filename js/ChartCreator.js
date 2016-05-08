@@ -192,7 +192,7 @@ var chartCreator=(function(){
 			htmlString = htmlString + "<img src='"+championImgURL+"'></img>"+"<br><span><b>"+championName+"<b></span><br>";
 			htmlString = htmlString + "<br><b>Win Rate: </b>"+winRate*100+"%";
 			htmlString = htmlString + "<br><b>Champion Points: </b>"+points+"";
-			htmlString = htmlString + "<br><b>LegendScore: </b>"+score+"";
+			htmlString = htmlString + "<br><b>KDA: </b>"+score+"";
 			htmlString = htmlString + "</div>";
 			$("#coordChartTooltipDiv").html(htmlString);
 			if(lineHover){
@@ -318,12 +318,12 @@ var chartCreator=(function(){
 	   						.attr("x", width-margin.right+spaceBetweenAxisAndTextLabel)
 	   						.attr("y",pointsYPosition+6+parseInt($(".axis-label").css("font-size")));
 		svgContainer.append("text")
-	   						.text("Legend")
+	   						.text("Average")
 	   						.attr("class","axis-label")
 	   						.attr("x", width-margin.right+spaceBetweenAxisAndTextLabel)
 	   						.attr("y",scoreYPosition+5);
 	   	svgContainer.append("text")
-	   						.text("Score")
+	   						.text("KDA")
 	   						.attr("class","axis-label")
 	   						.attr("x", width-margin.right+spaceBetweenAxisAndTextLabel)
 	   						.attr("y",scoreYPosition+6+parseInt($(".axis-label").css("font-size")));
