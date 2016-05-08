@@ -1,6 +1,6 @@
 var matchesModule=(function(){
 
-	function groupLaneRoleChampion(matchesArray){
+	function groupLaneRoleChampion(matchesArray,masteryArray){
 		if(typeof matchesArray === 'undefined'){
 			return null; //maybe the user has no ranked data :(
 		}
@@ -72,7 +72,15 @@ var matchesModule=(function(){
 			championsForLaneArray = Object.getOwnPropertyNames(dict[namesForDictArray[i]]);
 			for(var k=0; k<championsForLaneArray.length; k++){
 				//TotalChampionPoints * TotalGamesPlayedInThisLane/TotalGamesPlayed
-				dict[namesForDictArray[i]][championsForLaneArray[k]] = parseInt(summonerModule.getChampionPointsByChampionID(+championsForLaneArray[k])*dict[namesForDictArray[i]][championsForLaneArray[k]]/sumChampionMatches[championsForLaneArray[k]]);
+				if(typeof masteryArray === 'undefined'){
+					dict[namesForDictArray[i]][championsForLaneArray[k]] = parseInt(summonerModule.getChampionPointsByChampionID(+championsForLaneArray[k])*dict[namesForDictArray[i]][championsForLaneArray[k]]/sumChampionMatches[championsForLaneArray[k]]);
+				}else{
+					for(var j=0;j<masteryArray.length;j++){
+						if((+masteryArray[j].championId) == (+championsForLaneArray[k])){
+							dict[namesForDictArray[i]][championsForLaneArray[k]] = parseInt((masteryArray[j].championPoints)*dict[namesForDictArray[i]][championsForLaneArray[k]]/sumChampionMatches[championsForLaneArray[k]]);
+						}
+					}					
+				}
 				dictLanePointsSum[namesForDictArray[i]] = dictLanePointsSum[namesForDictArray[i]] + dict[namesForDictArray[i]][championsForLaneArray[k]];
 			}
 			dict[namesForDictArray[i]].totalPoints = dictLanePointsSum[namesForDictArray[i]];

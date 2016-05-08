@@ -15,6 +15,10 @@ var mainController=(function(){
         //keep doind things, do not wait till loads
         if(page=='summoner'){ //page is a var declared in each html
             summonerModule.startPage();
+        }else{
+            if(page=='teambuilder'){
+                teamBuilder.startPage();
+            }
         }
     }
 

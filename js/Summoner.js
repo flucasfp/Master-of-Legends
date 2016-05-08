@@ -94,30 +94,34 @@ var summonerModule =(function(){
 		var roleData = {series:[{name:'Roles',colorByPoint:true,data:[]}],drilldown:{series:[]}};
 		var laneData = {series:[{name:'Lanes',colorByPoint:true,data:[]}],drilldown:{series:[]}};
 		
-		//init roleData Object:
-		for(var i=0; i<championModule.championRoles.length; i++){
-			var roleObject = {};
-			roleObject.name = championModule.championRoles[i];
-			roleObject.y = 0;
-			roleObject.drilldown = championModule.championRoles[i];
-			roleData.series[0].data.push(roleObject);
+		if(summonerMastery.length!=0){
+			//init roleData Object:
+			for(var i=0; i<championModule.championRoles.length; i++){
+				var roleObject = {};
+				roleObject.name = championModule.championRoles[i];
+				roleObject.y = 0;
+				roleObject.drilldown = championModule.championRoles[i];
+				roleData.series[0].data.push(roleObject);
 
-			var drilldownObject = {};
-			drilldownObject.name = championModule.championRoles[i];
-			drilldownObject.id = championModule.championRoles[i];
-			drilldownObject.data = [];
-			roleData.drilldown.series.push(drilldownObject);
-		};
+				var drilldownObject = {};
+				drilldownObject.name = championModule.championRoles[i];
+				drilldownObject.id = championModule.championRoles[i];
+				drilldownObject.data = [];
+				roleData.drilldown.series.push(drilldownObject);
+			};
 
-		//set values to roleData Object
-		for(var i=0; i<summonerMastery.length; i++){
-			for(var k=0; k<roleData.series[0].data.length; k++){
-				if(roleData.series[0].data[k].name == championModule.getChampionRoleByID(summonerMastery[i].championId) ){
-					roleData.series[0].data[k].y = roleData.series[0].data[k].y + summonerMastery[i].championPoints;
-					roleData.drilldown.series[k].data.push([championModule.getChampionNameByID(summonerMastery[i].championId),summonerMastery[i].championPoints]);
+			//set values to roleData Object
+			for(var i=0; i<summonerMastery.length; i++){
+				for(var k=0; k<roleData.series[0].data.length; k++){
+					if(roleData.series[0].data[k].name == championModule.getChampionRoleByID(summonerMastery[i].championId) ){
+						roleData.series[0].data[k].y = roleData.series[0].data[k].y + summonerMastery[i].championPoints;
+						roleData.drilldown.series[k].data.push([championModule.getChampionNameByID(summonerMastery[i].championId),summonerMastery[i].championPoints]);
+					}
 				}
 			}
 		}
+
+
 
 
 		var dict = matchesModule.groupLaneRoleChampion(summonerMatches.matches);

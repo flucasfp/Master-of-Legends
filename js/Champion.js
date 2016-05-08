@@ -8,6 +8,9 @@ var championModule=(function(){
 	function getChampionSquareImgURL(championKey){
 		return "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/champion/"+championKey+".png"
 	}
+	function getChampionLoadingImgURL(championKey){
+		return "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/"+championKey+"_0.jpg"
+	}
 
 	function getChampionKeyByID(championID){
 		for(var i=0;i<Object.keys(championModule.championsInfo.data).length;i++){
@@ -88,6 +91,7 @@ var championModule=(function(){
     	createChampionListItemHTML: createChampionListItemHTML,
     	championsInfo: championsInfo,
     	getChampionSquareImgURL: getChampionSquareImgURL,
+    	getChampionLoadingImgURL: getChampionLoadingImgURL,
     	getChampionKeyByID: getChampionKeyByID,
     	championRoles: championRoles,
     	championLanes: championLanes,
