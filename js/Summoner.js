@@ -18,7 +18,7 @@ var summonerModule =(function(){
 		if(summonerLeague.leagueNotFound){
 			$("#summonerLevel").text("Level: "+summonerInfo[accessKeySummonerInfo].summonerLevel);	
 		}else{
-			$("#summonerLevel").text(summonerLeague[summonerInfo[accessKeySummonerInfo].id][0].tier +" "+summonerLeague[summonerInfo[accessKeySummonerInfo].id][0].entries[0].division);	
+			$("#summonerLevel").addClass(summonerLeague[summonerInfo[accessKeySummonerInfo].id][0].tier).text(summonerLeague[summonerInfo[accessKeySummonerInfo].id][0].tier +" "+summonerLeague[summonerInfo[accessKeySummonerInfo].id][0].entries[0].division);
 		}
 	}
 
