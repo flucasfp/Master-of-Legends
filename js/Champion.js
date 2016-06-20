@@ -6,7 +6,8 @@ var championModule=(function(){
 	var championLanesLabels = ['Top','Jungle','Mid','Bot Carry','Bot Support'];
 
 	function getChampionSquareImgURL(championKey){
-		return "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/champion/"+championKey+".png"
+		return serverCommunication.getSquareImageURL(championKey);
+		//return "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/champion/"+championKey+".png"
 	}
 	function getChampionLoadingImgURL(championKey){
 		return "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/"+championKey+"_0.jpg"

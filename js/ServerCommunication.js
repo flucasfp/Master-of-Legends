@@ -1,8 +1,12 @@
 var serverCommunication=(function(){
-    var squareChampionImageUrl = "http://ddragon.leagueoflegends.com/cdn/6.9.1/img/champion";
+    var squareChampionImageUrl = "http://ddragon.leagueoflegends.com/cdn/6.12.1/img/champion";
     var squareChampionImageType =".png";
     //var serverURL = "http://localhost:5000/?";
     var serverURL = "http://masteroflegends.pythonanywhere.com/?";
+    
+    function getSquareImageURL(championKey){
+    	return squareChampionImageUrl+"/"+championKey+squareChampionImageType;
+    }
 
     function getRandomSplashURL(callbackFunction){
         var randomSplashUrl = "";
@@ -117,11 +121,12 @@ var serverCommunication=(function(){
     }
     //public vars/methods:
     return{
+	    getSquareImageURL: getSquareImageURL,
         getRandomSplashURL: getRandomSplashURL,
         getSummonerInfo: getSummonerInfo,
         getSummonerLeague: getSummonerLeague,
         getMasteryAndMatches: getMasteryAndMatches,
         getSummonerRankedStats: getSummonerRankedStats,
-        getSummonerMastery:getSummonerMastery
+        getSummonerMastery: getSummonerMastery
     };
 })();
