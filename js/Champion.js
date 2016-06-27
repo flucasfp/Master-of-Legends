@@ -49,14 +49,14 @@ var championModule=(function(){
 
 	}
 
-	function createChampionListItemHTML(summonerMastery,grade,showProgressBar){
+	function createChampionListItemHTML(summonerMastery,chestGranted,showProgressBar){
 		var championID = summonerMastery.championId;
 		var championKey = getChampionKeyByID(championID);
 		var html = "<div class='championListItemDiv "+getChampionRoleByID(championID)+"'><div class='imageList'><img class='championListImage' src='";
 		//img src:
 		html = html + getChampionSquareImgURL(championKey) + "'></img>";
 		//white hover overlay and champion info:
-		html = html + "<div class='championListItemOverlay'>"+championModule.championsInfo.data[championKey].name+"<br>"+grade+"</div></div>"
+		html = html + "<div class='championListItemOverlay'>"+championModule.championsInfo.data[championKey].name+"<br>"+chestGranted+"</div></div>"
 		if(showProgressBar){
 			//progression bar
 			var progressPercent = parseInt(getMasteryProgressInPercent(summonerMastery.championPointsSinceLastLevel,summonerMastery.championPointsUntilNextLevel)*100);

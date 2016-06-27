@@ -55,7 +55,7 @@ var summonerModule =(function(){
 		var countChampions = 0;
 		var maxShowed = 3;
 		while(countChampions!=maxShowed && countChampions!=summonerMastery.length){
-			$("#topChampionsMasteryList").append(championModule.createChampionListItemHTML(summonerMastery[countChampions],getHighestGrade(summonerMastery[countChampions]),false));
+			$("#topChampionsMasteryList").append(championModule.createChampionListItemHTML(summonerMastery[countChampions],summonerMastery[countChampions].championPoints,true));
 			countChampions++;
 		}
 
@@ -63,7 +63,7 @@ var summonerModule =(function(){
 		var currentChampion = 0;
 		while(countChampions!=maxShowed && currentChampion!=summonerMastery.length){
 			if(!summonerMastery[currentChampion].chestGranted){
-				$("#nextChestList").append(championModule.createChampionListItemHTML(summonerMastery[currentChampion],getHighestGrade(summonerMastery[currentChampion]),false));;
+				$("#nextChestList").append(championModule.createChampionListItemHTML(summonerMastery[currentChampion],summonerMastery[currentChampion].championPoints,true));;
 				countChampions++;
 			}
 			currentChampion++;
@@ -75,7 +75,7 @@ var summonerModule =(function(){
 		for(var i=0;i<summonerMastery.length;i++){
 			targetDiv = "#championLevelGroup"+summonerMastery[i].championLevel;
 			$(targetDiv).show();
-			$(targetDiv).append(championModule.createChampionListItemHTML(summonerMastery[i],getHighestGrade(summonerMastery[i]),true));
+			$(targetDiv).append(championModule.createChampionListItemHTML(summonerMastery[i],summonerMastery[i].championPoints,true));
 
 		}
 		
@@ -153,6 +153,49 @@ var summonerModule =(function(){
 
 	};
 
+	function showMatchlistChart(){
+		var matchlist = crossfilter(summonerMatches.matches);
+		
+		var ignoredLaneAndRoles = ["BOTTOMDUO","BOTTOMSOLO","MIDDUO_CARRY","MIDNONE","BOTTOMNONE"];
+		
+		var dimensionByLaneAndRole = matchlist.dimension(function(d){
+			if(ignoredLaneAndRoles.indexOf(d.lane+d.role)==-1){
+				//nao esta na lista de ignorados
+				return d.lane+d.role;
+			}else{
+				return "NO-INFO";
+			}
+		});
+		
+		var groupByLaneAndRole = dimensionByLaneAndRole.group();
+
+		var gamesByDay = matchlist.dimension(function(d){
+			return d3.time.day(new Date(d.timestamp));
+		});
+		var gamesByDayGroup = gamesByDay.group();
+
+		console.log(gamesByDayGroup);
+		var timeChart = dc.lineChart("#time-chart");
+
+		timeChart.margins({top: 10, right: 10, bottom: 20, left: 40})
+				.transitionDuration(500)
+			    .dimension(gamesByDay)
+			    .group(gamesByDayGroup)
+			    .mouseZoomable(true)
+			    .renderArea(true)
+			    .brushOn(false)
+				.elasticY(true)
+				.xUnits(d3.time.months)
+				.renderHorizontalGridLines(true)
+			    .x(d3.time.scale().domain([new Date(2013, 0, 1), new Date(2016, 11, 31)]));
+
+
+
+		dc.renderAll();
+
+
+	};
+
 	function checkSummonerRankedStatsResponse(stats){
 		var facts = crossfilter(stats.champions);
 
@@ -216,6 +259,7 @@ var summonerModule =(function(){
 		showSummonerMasteryList();
 		showSummonerMasteryChart();
 		showSummonerPieCharts();
+		showMatchlistChart();
 
 		serverCommunication.getSummonerRankedStats(summonerInfo[accessKeySummonerInfo].id,summonerInfo.region,checkSummonerRankedStatsResponse);
 

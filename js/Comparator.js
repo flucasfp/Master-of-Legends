@@ -167,9 +167,9 @@ var comparator=(function(){
 
 		$(chartDivID).highcharts({
 	        chart: {
-	        	height: (( (dataLength+1) * (barHeight+barPadding))+75),
+	        	height: (( (dataLength+1) * (barHeight+barPadding))+55),
 	            type: 'bar',
-	            marginTop:30,
+	            marginTop:75,
 	            marginLeft: 80,
 	            marginBottom: 90,
 	            backgroundColor: 'transparent',
@@ -192,7 +192,10 @@ var comparator=(function(){
 	        legend: { 
 		        borderRadius: 5,
 		        borderWidth: 1,
-				backgroundColor: 'white'
+				backgroundColor: 'white',
+				align:'center',
+				verticalAlign:'top',
+				y: 35
 		    },
 	        xAxis: {
 	        	//champion names: ['Cait','Karthus',...]
