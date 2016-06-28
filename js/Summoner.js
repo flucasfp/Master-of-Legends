@@ -154,44 +154,241 @@ var summonerModule =(function(){
 	};
 
 	function showMatchlistChart(){
-		var matchlist = crossfilter(summonerMatches.matches);
-		
-		var ignoredLaneAndRoles = ["BOTTOMDUO","BOTTOMSOLO","MIDDUO_CARRY","MIDNONE","BOTTOMNONE"];
-		
-		var dimensionByLaneAndRole = matchlist.dimension(function(d){
-			if(ignoredLaneAndRoles.indexOf(d.lane+d.role)==-1){
-				//nao esta na lista de ignorados
-				return d.lane+d.role;
-			}else{
-				return "NO-INFO";
+
+		var interval = "week";
+		var matchlist = summonerMatches.matches;
+
+		matchlist.sort(function(a,b){return a.timestamp-b.timestamp;});
+
+		var minDate = Infinity , maxDate = -1;
+
+		for(var i=0;i<matchlist.length;i++){
+			if(matchlist[i].timestamp < minDate){
+				minDate = matchlist[i].timestamp;
 			}
-		});
+			if(matchlist[i].timestamp > maxDate){
+				maxDate = matchlist[i].timestamp;
+			}
+		};
+
+		var countTop = d3.map();
+		var countJungle = d3.map();
+		var countMid = d3.map();
+		var countCarry = d3.map();
+		var countSupport = d3.map();
+
+		for(var i=0;i<matchlist.length;i++){
+			console.log(matchlist[i].lane+matchlist[i].role);
+			var day = d3.time[interval](new Date(matchlist[i].timestamp)).getTime();
+
+			if(matchlist[i].lane=="TOP"){
+				if(countTop.keys().indexOf(""+day)==-1){//first time here
+					countTop.set(day,1);
+				}else{//not the first time here
+					var oldValue = countTop.get(day);
+					countTop.set(day,oldValue+1); //++
+				}				
+			}
+
+			if(matchlist[i].lane=="JUNGLE"){
+				if(countJungle.keys().indexOf(""+day)==-1){//first time here
+					countJungle.set(day,1);
+				}else{//not the first time here
+					var oldValue = countJungle.get(day);
+					countJungle.set(day,oldValue+1); //++
+				}				
+			}
+
+			if(matchlist[i].lane=="MID"){
+				if(countMid.keys().indexOf(""+day)==-1){//first time here
+					countMid.set(day,1);
+				}else{//not the first time here
+					var oldValue = countMid.get(day);
+					countMid.set(day,oldValue+1); //++
+				}				
+			}
+
+			if(matchlist[i].lane+matchlist[i].role=="BOTTOMDUO_CARRY"){
+				if(countCarry.keys().indexOf(""+day)==-1){//first time here
+					countCarry.set(day,1);
+				}else{//not the first time here
+					var oldValue = countCarry.get(day);
+					countCarry.set(day,oldValue+1); //++
+				}				
+			}
+
+			if(matchlist[i].lane+matchlist[i].role=="BOTTOMDUO_SUPPORT"){
+				if(countSupport.keys().indexOf(""+day)==-1){//first time here
+					countSupport.set(day,1);
+				}else{//not the first time here
+					var oldValue = countSupport.get(day);
+					countSupport.set(day,oldValue+1); //++
+				}				
+			}
+
+		};
+
+		var days = d3.time[interval+"s"](minDate, maxDate);
+
+		var topData = new Array(days.length);
+		var jungleData = new Array(days.length);
+		var midData = new Array(days.length);
+		var carryData = new Array(days.length);
+		var supportData = new Array(days.length);
+
+
+		for(var i=0;i<days.length;i++){
+			if(typeof countTop.get(days[i].getTime()) === 'undefined'){
+				topData[i] = [days[i].getTime(), 0];
+			}else{
+				topData[i] = [days[i].getTime(), countTop.get(days[i].getTime())];
+			}
+
+			if(typeof countMid.get(days[i].getTime()) === 'undefined'){
+				midData[i] = [days[i].getTime(), 0];
+			}else{
+				midData[i] = [days[i].getTime(), countMid.get(days[i].getTime())];
+			}
+
+			if(typeof countJungle.get(days[i].getTime()) === 'undefined'){
+				jungleData[i] = [days[i].getTime(), 0];
+			}else{
+				jungleData[i] = [days[i].getTime(), countJungle.get(days[i].getTime())];
+			}
+
+			if(typeof countCarry.get(days[i].getTime()) === 'undefined'){
+				carryData[i] = [days[i].getTime(), 0];
+			}else{
+				carryData[i] = [days[i].getTime(), countCarry.get(days[i].getTime())];
+			}
+
+			if(typeof countSupport.get(days[i].getTime()) === 'undefined'){
+				supportData[i] = [days[i].getTime(), 0];
+			}else{
+				supportData[i] = [days[i].getTime(), countSupport.get(days[i].getTime())];
+			}
+		}
 		
-		var groupByLaneAndRole = dimensionByLaneAndRole.group();
 
-		var gamesByDay = matchlist.dimension(function(d){
-			return d3.time.day(new Date(d.timestamp));
-		});
-		var gamesByDayGroup = gamesByDay.group();
+		$('#time-chart').highcharts({
+		colors:['#7cb5ec','#f15c80', '#90ed7d', '#f7a35c', '#8085e9', '#e4d354', '#2b908f', '#f45b5b', '#91e8e1'],
+        chart: {
+            type: 'area',
+            panning: true,
+            panKey: "shift", 
+            zoomType: 'x',
+            opacity:1.0,
+            backgroundColor: 'transparent',
+	            style:{
+	            	color:'white'
+	            }
+        },
+        legend: { 
+		        borderRadius: 5,
+		        borderWidth: 1,
+				backgroundColor: 'white'
+		},
+        title: {
+            text: 'Ranked Games By Week',
+            style:{
+	                	color: 'white'
+	            }
+        },
+        subtitle: {
+            text: 'Click and drag to zoom in. Hold down shift key to pan.',
+            style:{
+	                	color: 'white'
+	            }
+        },
+        xAxis: {
+        	type: 'datetime',
+        	minRange:24 * 3600 * 1000 * 8,
+            tickmarkPlacement: 'on',
+            title: {
+                enabled: false
+            },
+            labels:{
+            	style:{
+	            		color:'white'
+	            	}
+            },
+            events:{
+            	setExtremes: function(event){
+            		console.log(event.min+ " - "+event.max);
+            	}
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'Number of Games',
+                style:{
+	                	color: 'white'
+	                }
+            },
+            labels: {
+                formatter: function () {
+                    return this.value;
+                },
+                style:{
+	                	color: 'white'
+	                }
+            }
+        },
+        tooltip: {
+        	xDateFormat: '%a %d/%m/%Y',
+            shared: true,
+            valueSuffix: ' games'
+        },
+        plotOptions: {
+        	threshold: null,
+            area: {
+                stacking: 'normal',
+                lineColor: '#666666',
+                lineWidth: 1,
+                marker: {
+                		radius:2,
+                		enabled: false,
+                    lineWidth: 1,
+                    lineColor: '#666666'
+                }
+            },
+          	series:{
+          		fillOpacity: 1.0
+          	}
 
-		console.log(gamesByDayGroup);
-		var timeChart = dc.lineChart("#time-chart");
-
-		timeChart.margins({top: 10, right: 10, bottom: 20, left: 40})
-				.transitionDuration(500)
-			    .dimension(gamesByDay)
-			    .group(gamesByDayGroup)
-			    .mouseZoomable(true)
-			    .renderArea(true)
-			    .brushOn(false)
-				.elasticY(true)
-				.xUnits(d3.time.months)
-				.renderHorizontalGridLines(true)
-			    .x(d3.time.scale().domain([new Date(2013, 0, 1), new Date(2016, 11, 31)]));
-
-
-
-		dc.renderAll();
+        },
+        series: [{
+            name: 'Top',
+            data: topData,
+            marker:{
+            	symbol: 'circle'
+            }
+        }, {
+            name: 'Jungle',
+            data: jungleData,
+            marker:{
+            	symbol: 'circle'
+            }
+        }, {
+            name: 'Mid',
+            data: midData,
+            marker:{
+            	symbol: 'circle'
+            }
+        }, {
+            name: 'Bot Carry',
+            data: carryData,
+            marker:{
+            	symbol: 'circle'
+            }
+        }, {
+            name: 'Bot Support',
+            data: supportData,
+            marker:{
+            	symbol: 'circle'
+            }
+        }]
+    });
 
 
 	};

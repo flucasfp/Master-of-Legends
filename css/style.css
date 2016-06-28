@@ -491,4 +491,6 @@ p{
 .CHALLENGER{
 	color:#32b4cc;
 }
-/*bronze{color:#b47f46}span.silver{color:#97a0a0}span.gold{color:#c4b430}span.platinum{color:#33b799}span.diamond{color:#3b8adb}span.challenger{color:#32b4cc}*/
+.y-axis-label, .y-label{
+	fill: white;
+}
