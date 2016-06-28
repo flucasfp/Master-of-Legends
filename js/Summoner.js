@@ -153,9 +153,36 @@ var summonerModule =(function(){
 
 	};
 
-	function showMatchlistChart(){
+	var matchlistMap;
 
+	function createMatchlistMap(){
+		matchlistMap = L.map('matchlistMap',{dragging:true,minZoom:3,zoomControl:false}).setView([33, 35], 3);
+		
+		var imageUrl = "img/SR.jpg";		
+		var imageBounds = [[0, 0], [57, 70]];
+
+		console.log(matchlistMap);
+
+		matchlistMap.setMaxBounds(imageBounds);
+
+		L.imageOverlay(imageUrl, imageBounds).addTo(matchlistMap);
+
+
+	}
+
+	function updateMatchListMap(initialDate, finalDate){
+
+	}
+
+	function updateMatchlistChampions(initialDate, finalDate){
+
+
+	}
+
+	function showMatchlistChart(){
+		createMatchlistMap();
 		var interval = "week";
+
 		var matchlist = summonerMatches.matches;
 
 		matchlist.sort(function(a,b){return a.timestamp-b.timestamp;});
@@ -178,7 +205,6 @@ var summonerModule =(function(){
 		var countSupport = d3.map();
 
 		for(var i=0;i<matchlist.length;i++){
-			console.log(matchlist[i].lane+matchlist[i].role);
 			var day = d3.time[interval](new Date(matchlist[i].timestamp)).getTime();
 
 			if(matchlist[i].lane=="TOP"){
@@ -269,8 +295,9 @@ var summonerModule =(function(){
 			}
 		}
 		
+		var laneVisivel = [true, true, true, true, true];
 
-		$('#time-chart').highcharts({
+		var matchlistChart = $('#time-chart').highcharts({
 		colors:['#7cb5ec','#f15c80', '#90ed7d', '#f7a35c', '#8085e9', '#e4d354', '#2b908f', '#f45b5b', '#91e8e1'],
         chart: {
             type: 'area',
@@ -353,9 +380,19 @@ var summonerModule =(function(){
                 }
             },
           	series:{
-          		fillOpacity: 1.0
-          	}
+          		fillOpacity: 1.0,
+          		events:{
+          			legendItemClick: function(event){
 
+          				var idClicked = event.target._i;
+
+          				laneVisivel[idClicked] = !laneVisivel[idClicked];
+
+          				console.log(laneVisivel);
+          			
+          			}
+          		}
+          	}
         },
         series: [{
             name: 'Top',

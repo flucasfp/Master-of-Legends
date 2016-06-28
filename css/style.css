@@ -494,3 +494,17 @@ p{
 .y-axis-label, .y-label{
 	fill: white;
 }
+#matchlistMap{
+	width: 400px;
+	height: 400px;
+}
+#matchlistChampions{
+	width:calc(100% - 400px);
+	height: 400px;
+}
+#matchlistInfo{
+	display:flex;
+}
+#matchlistInfoContainer{
+	margin-top: 20px;
+}
