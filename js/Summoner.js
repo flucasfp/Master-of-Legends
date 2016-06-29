@@ -166,7 +166,18 @@ var summonerModule =(function(){
 		matchlistMap.setMaxBounds(imageBounds);
 
 		L.imageOverlay(imageUrl, imageBounds).addTo(matchlistMap);
-
+		
+		$.getJSON('geojson/summonersRift.geojson',function(data){
+						
+			L.geoJson(data, {
+			    style: function (feature) {
+			        return {color: 'black',fillColor:'blue',opacity:1.0, weight:2};
+			    },
+			    onEachFeature: function (feature, layer) {
+			        layer.bindPopup(feature.properties.name);
+			    }
+			}).addTo(matchlistMap);
+		});
 
 	}
 

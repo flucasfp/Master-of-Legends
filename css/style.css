@@ -497,6 +497,7 @@ p{
 #matchlistMap{
 	width: 400px;
 	height: 400px;
+	border: 1px solid white;
 }
 #matchlistChampions{
 	width:calc(100% - 400px);
@@ -507,4 +508,7 @@ p{
 }
 #matchlistInfoContainer{
 	margin-top: 20px;
+}
+.leaflet-popup-content{
+	color:black;
 }
