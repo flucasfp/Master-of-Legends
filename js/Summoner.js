@@ -154,14 +154,13 @@ var summonerModule =(function(){
 	};
 
 	var matchlistMap;
+	var geoJsonObject;
 
 	function createMatchlistMap(){
 		matchlistMap = L.map('matchlistMap',{dragging:true,minZoom:3,zoomControl:false}).setView([33, 35], 3);
-		
+		var topLayer = 1;
 		var imageUrl = "img/SR.jpg";		
 		var imageBounds = [[0, 0], [57, 70]];
-
-		console.log(matchlistMap);
 
 		matchlistMap.setMaxBounds(imageBounds);
 
@@ -169,7 +168,7 @@ var summonerModule =(function(){
 		
 		$.getJSON('geojson/summonersRift.geojson',function(data){
 						
-			L.geoJson(data, {
+			geoJsonObject = L.geoJson(data,{
 			    style: function (feature) {
 			        return {color: 'black',fillColor:'blue',opacity:1.0, weight:2};
 			    },
@@ -178,23 +177,12 @@ var summonerModule =(function(){
 			    }
 			}).addTo(matchlistMap);
 		});
-
 	}
 
-	function updateMatchListMap(initialDate, finalDate){
-
-	}
-
-	function updateMatchlistChampions(initialDate, finalDate){
-
-
-	}
-
-	function showMatchlistChart(){
-		createMatchlistMap();
+	function updateMatchListMap(matchlist){
 		var interval = "week";
 
-		var matchlist = summonerMatches.matches;
+		//var matchlist = summonerMatches.matches;
 
 		matchlist.sort(function(a,b){return a.timestamp-b.timestamp;});
 
@@ -437,6 +425,52 @@ var summonerModule =(function(){
             }
         }]
     });
+	}
+
+	function updateMatchListChampions(matchlist){
+
+		var championsCounter = d3.map();
+		var oldValue;
+		var container = "#matchlistChampions";
+
+		for(var i=0;i<matchlist.length;i++){
+			if(typeof championsCounter.get(matchlist[i].champion) !== 'undefined'){ //counter already exists
+				oldValue = championsCounter.get(matchlist[i].champion);
+				championsCounter.set(matchlist[i].champion, oldValue+1 );
+			}else{
+				championsCounter.set(matchlist[i].champion, 1);
+			}
+		}
+		var countArray = championsCounter.entries().sort(function(a,b){return b.value-a.value;});
+
+		$(container).empty();
+
+		for(var i=0;i<countArray.length;i++){
+			$(container).append("<div class='championListItem' ><img src='"+
+				championModule.getChampionSquareImgURL(championModule.getChampionKeyByID(+countArray[i].key))+
+				"'><span class='championListKey'>"+championModule.getChampionNameByID(+countArray[i].key)+"</span> <span class='championListValue'> "+countArray[i].value+" game(s)</span></div>");
+		}
+		//define click event
+		$(".championListItem").each(function(){
+			$(this).click(function(){
+				$(".championListItem").each(function(){
+					$(this).removeClass('clicked');	
+				});
+				$(this).addClass('clicked');
+			})
+
+
+		});
+
+
+	}
+
+	function showMatchlistChart(){
+		createMatchlistMap();
+		
+		updateMatchListMap(summonerMatches.matches);
+
+		updateMatchListChampions(summonerMatches.matches);
 
 
 	};

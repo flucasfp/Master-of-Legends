@@ -498,13 +498,39 @@ p{
 	width: 400px;
 	height: 400px;
 	border: 1px solid white;
+	float:left;
+	margin-right:15px;
 }
 #matchlistChampions{
-	width:calc(100% - 400px);
-	height: 400px;
+	width:300px;
+	max-height: 400px;
+	overflow-y: scroll;
+	border: 1px solid white;
+}
+.championListItem{
+	height: 35px;
+	border: 1px solid white;
+	font-style: italic;
+	cursor: pointer;
+}
+.championListItem.clicked{
+	background-color: #214048;
+}
+.championListItem img{
+	width: 30px;
+	height: 30px;
+	margin-top: auto;
+	margin-bottom: auto;
+	margin-right: 5px;
+}
+.championListValue{
+	float: right;
+	margin-right:7px;
+	margin-top:5px;
 }
 #matchlistInfo{
-	display:flex;
+	width:715px;
+	
 }
 #matchlistInfoContainer{
 	margin-top: 20px;
