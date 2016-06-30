@@ -154,7 +154,12 @@ var summonerModule =(function(){
 	};
 
 	var matchlistMap;
+	var matchlistChart;
 	var geoJsonObject;
+	var originalInitialDate = Infinity, originalFinalDate = -1;
+	var matchInitialDate = -1, matchFinalDate = Infinity;
+	var laneVisivel = [true, true, true, true, true];
+	var listChampions = [];
 
 	function createMatchlistMap(){
 		matchlistMap = L.map('matchlistMap',{dragging:true,minZoom:3,zoomControl:false}).setView([33, 35], 3);
@@ -170,7 +175,7 @@ var summonerModule =(function(){
 						
 			geoJsonObject = L.geoJson(data,{
 			    style: function (feature) {
-			        return {color: 'black',fillColor:'blue',opacity:1.0, weight:2};
+			        return {color: 'black',fillColor:'blue',opacity:1.0, weight:2,fillOpacity:0.6};
 			    },
 			    onEachFeature: function (feature, layer) {
 			        layer.bindPopup(feature.properties.name);
@@ -179,21 +184,18 @@ var summonerModule =(function(){
 		});
 	}
 
-	function updateMatchListMap(matchlist){
+	function getChartData(matchlist){
 		var interval = "week";
-
 		//var matchlist = summonerMatches.matches;
 
 		matchlist.sort(function(a,b){return a.timestamp-b.timestamp;});
 
-		var minDate = Infinity , maxDate = -1;
-
 		for(var i=0;i<matchlist.length;i++){
-			if(matchlist[i].timestamp < minDate){
-				minDate = matchlist[i].timestamp;
+			if(matchlist[i].timestamp < originalInitialDate){
+				originalInitialDate = matchlist[i].timestamp;
 			}
-			if(matchlist[i].timestamp > maxDate){
-				maxDate = matchlist[i].timestamp;
+			if(matchlist[i].timestamp > originalFinalDate){
+				originalFinalDate = matchlist[i].timestamp;
 			}
 		};
 
@@ -253,7 +255,12 @@ var summonerModule =(function(){
 
 		};
 
-		var days = d3.time[interval+"s"](minDate, maxDate);
+		var days;
+		if(matchInitialDate==-1){
+			days = d3.time[interval+"s"](originalInitialDate, originalFinalDate);	
+		}else{
+			days = d3.time[interval+"s"](matchInitialDate, matchFinalDate);	
+		}		
 
 		var topData = new Array(days.length);
 		var jungleData = new Array(days.length);
@@ -292,11 +299,35 @@ var summonerModule =(function(){
 			}else{
 				supportData[i] = [days[i].getTime(), countSupport.get(days[i].getTime())];
 			}
+		};
+
+		return [topData,jungleData,midData,carryData,supportData];
+
+
+	}
+
+	function updateMatchListChart(matchlist){
+
+		var dataSet = getChartData(matchlist);
+
+		for(var i=0;i<5;i++){
+			matchlistChart.series[i].setData(dataSet[i]);
 		}
 		
-		var laneVisivel = [true, true, true, true, true];
 
-		var matchlistChart = $('#time-chart').highcharts({
+	}
+
+	function createMatchListChart(matchlist){
+
+		var dataSet = getChartData(matchlist);
+		
+		var topData = dataSet[0];
+		var jungleData = dataSet[1];
+		var midData = dataSet[2];
+		var carryData = dataSet[3];
+		var supportData = dataSet[4];
+				
+		$('#time-chart').highcharts({
 		colors:['#7cb5ec','#f15c80', '#90ed7d', '#f7a35c', '#8085e9', '#e4d354', '#2b908f', '#f45b5b', '#91e8e1'],
         chart: {
             type: 'area',
@@ -307,7 +338,13 @@ var summonerModule =(function(){
             backgroundColor: 'transparent',
 	            style:{
 	            	color:'white'
-	            }
+	            },
+	        events:{
+	        	load: function(){
+	        		matchlistChart = this;
+	        	}
+	        }
+
         },
         legend: { 
 		        borderRadius: 5,
@@ -340,7 +377,19 @@ var summonerModule =(function(){
             },
             events:{
             	setExtremes: function(event){
-            		console.log(event.min+ " - "+event.max);
+
+            		if(typeof event.min === 'undefined'){
+            			matchInitialDate = originalInitialDate;
+            		}else{
+            			matchInitialDate = event.min;
+            		};
+            		if(typeof event.max === 'undefined'){
+            			matchFinalDate = originalFinalDate;
+            		}else{
+            			matchFinalDate = event.max;
+            		};
+
+            		updateMatchListChampions(filterMatchList(summonerMatches.matches));
             	}
             }
         },
@@ -387,8 +436,6 @@ var summonerModule =(function(){
 
           				laneVisivel[idClicked] = !laneVisivel[idClicked];
 
-          				console.log(laneVisivel);
-          			
           			}
           		}
           	}
@@ -427,6 +474,7 @@ var summonerModule =(function(){
     });
 	}
 
+
 	function updateMatchListChampions(matchlist){
 
 		var championsCounter = d3.map();
@@ -446,31 +494,128 @@ var summonerModule =(function(){
 		$(container).empty();
 
 		for(var i=0;i<countArray.length;i++){
-			$(container).append("<div class='championListItem' ><img src='"+
+			$(container).append("<div class='championListItem championId"+countArray[i].key+"' ><img src='"+
 				championModule.getChampionSquareImgURL(championModule.getChampionKeyByID(+countArray[i].key))+
 				"'><span class='championListKey'>"+championModule.getChampionNameByID(+countArray[i].key)+"</span> <span class='championListValue'> "+countArray[i].value+" game(s)</span></div>");
 		}
 		//define click event
 		$(".championListItem").each(function(){
 			$(this).click(function(){
-				$(".championListItem").each(function(){
-					$(this).removeClass('clicked');	
-				});
+				if($(this).hasClass('clicked')){
+					
+					$(this).removeClass('clicked');
+
+					var championId = +$(this).attr('class').split(" ")[1].split('championId')[1];
+					listChampions.splice(listChampions.indexOf(championId), 1);
+
+					updateMatchListChart(filterMatchList(matchlist));
+
+					return;
+				};				
+
+				var championId = +$(this).attr('class').split(" ")[1].split('championId')[1];
+				listChampions.push(championId);
+
 				$(this).addClass('clicked');
+
+				updateMatchListChart(filterMatchList(matchlist));
 			})
 
 
 		});
 
+		$(container).append("<div><span id='resetChampionList' style='cursor:pointer' class='championListValue'> Reset</span></div>");
+		$("#resetChampionList").click(function(){
+			resetMatchListChampions(filterMatchList(matchlist));
+		});
 
+
+	}
+	function resetMatchListChampions(matchlist){
+			listChampions = [];
+			updateMatchListChart(matchlist);
+			updateMatchListChampions(matchlist);
+	}
+
+	function updateMatchListMap(matchlist){
+
+
+
+	}
+
+	function filterMatchList(matchlist){
+		var TOP_INDEX = 0;
+		var JUNGLE_INDEX = 1;
+		var MID_INDEX = 2;
+		var CARRY_INDEX = 3;
+		var SUPPORT_INDEX = 4;
+
+		if(typeof matchInitialDate === 'undefined'){
+			matchInitialDate = -1;
+		}
+		if(typeof matchFinalDate === 'undefined'){
+			matchFinalDate = Infinity;
+		}
+
+		var result = [];
+		var valid = false;
+
+
+		for(var i=0; i<matchlist.length; i++){
+			if(matchlist[i].timestamp>=matchInitialDate && matchlist[i].timestamp<=matchFinalDate){
+
+				if(matchlist[i].lane=='TOP'){
+					if(laneVisivel[TOP_INDEX]){
+						valid = true;
+					}
+				}
+				if(matchlist[i].lane=='JUNGLE'){
+					if(laneVisivel[JUNGLE_INDEX]){
+						valid = true;
+					}
+				}
+				if(matchlist[i].lane=='MID'){
+					if(laneVisivel[MID_INDEX]){
+						valid = true;
+					}
+				}
+				if(matchlist[i].lane+matchlist[i].role=='BOTTOMDUO_CARRY'){
+					if(laneVisivel[CARRY_INDEX]){
+						valid = true;
+					}
+				}
+				if(matchlist[i].lane+matchlist[i].role=='BOTTOMDUO_SUPPORT'){
+					if(laneVisivel[SUPPORT_INDEX]){
+						valid = true;
+					}
+				}
+
+				if(valid){
+					if(listChampions.length==0 || listChampions.indexOf(matchlist[i].champion)!=-1){
+
+						result.push(matchlist[i]);
+					}
+				}
+				
+
+			}//end time check
+
+		}//end for
+
+
+
+
+		return result;
 	}
 
 	function showMatchlistChart(){
 		createMatchlistMap();
 		
-		updateMatchListMap(summonerMatches.matches);
+		createMatchListChart(summonerMatches.matches);
 
 		updateMatchListChampions(summonerMatches.matches);
+
+		updateMatchListMap(summonerMatches.matches);
 
 
 	};

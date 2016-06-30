@@ -504,7 +504,7 @@ p{
 #matchlistChampions{
 	width:300px;
 	max-height: 400px;
-	overflow-y: scroll;
+	overflow-y: auto;
 	border: 1px solid white;
 }
 .championListItem{
