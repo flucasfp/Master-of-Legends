@@ -153,6 +153,10 @@ var summonerModule =(function(){
 
 	};
 
+	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 	var matchlistMap;
 	var matchlistChart;
 	var geoJsonObject;
@@ -186,7 +190,6 @@ var summonerModule =(function(){
 
 	function getChartData(matchlist){
 		var interval = "week";
-		//var matchlist = summonerMatches.matches;
 
 		matchlist.sort(function(a,b){return a.timestamp-b.timestamp;});
 
@@ -260,7 +263,7 @@ var summonerModule =(function(){
 			days = d3.time[interval+"s"](originalInitialDate, originalFinalDate);	
 		}else{
 			days = d3.time[interval+"s"](matchInitialDate, matchFinalDate);	
-		}		
+		}
 
 		var topData = new Array(days.length);
 		var jungleData = new Array(days.length);
@@ -389,7 +392,8 @@ var summonerModule =(function(){
             			matchFinalDate = event.max;
             		};
 
-            		updateMatchListChampions(filterMatchList(summonerMatches.matches));
+          			updateMatchListChampions(filterMatchList(summonerMatches.matches));
+
             	}
             }
         },
@@ -436,6 +440,8 @@ var summonerModule =(function(){
 
           				laneVisivel[idClicked] = !laneVisivel[idClicked];
 
+          				updateMatchListChampions(filterMatchList(summonerMatches.matches));
+
           			}
           		}
           	}
@@ -474,10 +480,17 @@ var summonerModule =(function(){
     });
 	}
 
+	var championsCounter = d3.map();
+
+	function setChampionsCounterToZero(){
+		for(var i=0;i<championsCounter.keys().length;i++){
+			championsCounter.set(championsCounter.keys()[i],0);
+		}
+	}
 
 	function updateMatchListChampions(matchlist){
-
-		var championsCounter = d3.map();
+		setChampionsCounterToZero();
+		//championsCounter = d3.map();
 		var oldValue;
 		var container = "#matchlistChampions";
 
@@ -501,6 +514,8 @@ var summonerModule =(function(){
 		//define click event
 		$(".championListItem").each(function(){
 			$(this).click(function(){
+				/*
+
 				if($(this).hasClass('clicked')){
 					
 					$(this).removeClass('clicked');
@@ -519,31 +534,33 @@ var summonerModule =(function(){
 				$(this).addClass('clicked');
 
 				updateMatchListChart(filterMatchList(matchlist));
+				*/
 			})
 
 
 		});
-
+		/*
 		$(container).append("<div><span id='resetChampionList' style='cursor:pointer' class='championListValue'> Reset</span></div>");
 		$("#resetChampionList").click(function(){
-			resetMatchListChampions(filterMatchList(matchlist));
+			//resetMatchListChampions(filterMatchList(matchlist));
+			resetMatchListChampions(matchlist);
 		});
+		*/
 
 
 	}
 	function resetMatchListChampions(matchlist){
 			listChampions = [];
-			updateMatchListChart(matchlist);
-			updateMatchListChampions(matchlist);
+			updateMatchListChart(filterMatchList(matchlist));
+			updateMatchListChampions(filterMatchList(matchlist));
 	}
 
 	function updateMatchListMap(matchlist){
 
-
-
 	}
 
 	function filterMatchList(matchlist){
+
 		var TOP_INDEX = 0;
 		var JUNGLE_INDEX = 1;
 		var MID_INDEX = 2;
@@ -560,50 +577,35 @@ var summonerModule =(function(){
 		var result = [];
 		var valid = false;
 
-
 		for(var i=0; i<matchlist.length; i++){
+			valid = false;
 			if(matchlist[i].timestamp>=matchInitialDate && matchlist[i].timestamp<=matchFinalDate){
 
-				if(matchlist[i].lane=='TOP'){
-					if(laneVisivel[TOP_INDEX]){
-						valid = true;
-					}
+				if(matchlist[i].lane=='TOP' && laneVisivel[TOP_INDEX]){
+					valid = true;					
 				}
-				if(matchlist[i].lane=='JUNGLE'){
-					if(laneVisivel[JUNGLE_INDEX]){
-						valid = true;
-					}
+				if(matchlist[i].lane=='JUNGLE' && laneVisivel[JUNGLE_INDEX]){
+					valid = true;
 				}
-				if(matchlist[i].lane=='MID'){
-					if(laneVisivel[MID_INDEX]){
-						valid = true;
-					}
+				if(matchlist[i].lane=='MID' && laneVisivel[MID_INDEX]){
+					valid = true;
 				}
-				if(matchlist[i].lane+matchlist[i].role=='BOTTOMDUO_CARRY'){
-					if(laneVisivel[CARRY_INDEX]){
-						valid = true;
-					}
+				if(matchlist[i].lane+matchlist[i].role=='BOTTOMDUO_CARRY' && laneVisivel[CARRY_INDEX]){
+					valid = true;
 				}
-				if(matchlist[i].lane+matchlist[i].role=='BOTTOMDUO_SUPPORT'){
-					if(laneVisivel[SUPPORT_INDEX]){
-						valid = true;
-					}
+				if(matchlist[i].lane+matchlist[i].role=='BOTTOMDUO_SUPPORT' && laneVisivel[SUPPORT_INDEX]){
+					valid = true;
 				}
 
-				if(valid){
+				if(valid==true){
 					if(listChampions.length==0 || listChampions.indexOf(matchlist[i].champion)!=-1){
-
 						result.push(matchlist[i]);
 					}
-				}
-				
+				}				
 
 			}//end time check
 
 		}//end for
-
-
-
 
 		return result;
 	}
@@ -611,14 +613,18 @@ var summonerModule =(function(){
 	function showMatchlistChart(){
 		createMatchlistMap();
 		
-		createMatchListChart(summonerMatches.matches);
+		createMatchListChart(filterMatchList(summonerMatches.matches));
 
-		updateMatchListChampions(summonerMatches.matches);
+		updateMatchListChampions(filterMatchList(summonerMatches.matches));
 
-		updateMatchListMap(summonerMatches.matches);
+		updateMatchListMap(filterMatchList(summonerMatches.matches));
 
 
 	};
+
+	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	function checkSummonerRankedStatsResponse(stats){
 		var facts = crossfilter(stats.champions);
