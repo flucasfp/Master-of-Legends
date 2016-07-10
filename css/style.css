@@ -511,7 +511,7 @@ p{
 	height: 35px;
 	border: 1px solid white;
 	font-style: italic;
-	cursor: pointer;
+	/*cursor: pointer;*/
 }
 .championListItem.clicked{
 	background-color: #214048;

@@ -186,6 +186,7 @@ var summonerModule =(function(){
 			    }
 			}).addTo(matchlistMap);
 		});
+		updateMatchListMap(filterMatchList(summonerMatches.matches));
 	}
 
 	function getChartData(matchlist){
@@ -345,6 +346,7 @@ var summonerModule =(function(){
 	        events:{
 	        	load: function(){
 	        		matchlistChart = this;
+	        		updateMatchListMap(filterMatchList(summonerMatches.matches));
 	        	}
 	        }
 
@@ -393,6 +395,7 @@ var summonerModule =(function(){
             		};
 
           			updateMatchListChampions(filterMatchList(summonerMatches.matches));
+          			updateMatchListMap(filterMatchList(summonerMatches.matches));
 
             	}
             }
@@ -441,6 +444,7 @@ var summonerModule =(function(){
           				laneVisivel[idClicked] = !laneVisivel[idClicked];
 
           				updateMatchListChampions(filterMatchList(summonerMatches.matches));
+          				updateMatchListMap(filterMatchList(summonerMatches.matches));
 
           			}
           		}
@@ -490,7 +494,7 @@ var summonerModule =(function(){
 
 	function updateMatchListChampions(matchlist){
 		setChampionsCounterToZero();
-		//championsCounter = d3.map();
+		championsCounter = d3.map();
 		var oldValue;
 		var container = "#matchlistChampions";
 
@@ -555,11 +559,91 @@ var summonerModule =(function(){
 			updateMatchListChampions(filterMatchList(matchlist));
 	}
 
-	function updateMatchListMap(matchlist){
+	function getCor(min,max,atual){
+		var cores = 'Blues';
+		var numBins = 4;
+
+		var passo = (max-min)/numBins;
+
+		for(var i=0;i<numBins;i++){
+			if(atual<=(i+1)*passo){
+				return colorbrewer[cores][numBins][i];
+			}
+		}
+
 
 	}
 
+	function updateMatchListMap(matchlist){
+		var counterTop = 0;
+		var counterJungle = 0;
+		var counterMid = 0;
+		var counterBot = 0;
+
+		for(var i=0;i<matchlist.length;i++){
+			if(matchlist[i].lane=='TOP'){
+				counterTop = counterTop + 1;
+			}
+			if(matchlist[i].lane=='JUNGLE'){
+				counterJungle = counterJungle + 1;
+			}
+			if(matchlist[i].lane=='MID'){
+				counterMid = counterMid + 1;
+			}
+			if(matchlist[i].lane+matchlist[i].role=='BOTTOMDUO_CARRY' || matchlist[i].lane+matchlist[i].role=='BOTTOMDUO_SUPPORT'){
+				counterBot = counterBot + 1;
+			}
+		}
+
+		var max = -1;
+
+		if(counterTop>max){
+			max = counterTop;
+		}
+		if(counterJungle>max){
+			max = counterJungle;
+		}
+		if(counterMid>max){
+			max = counterMid;
+		}
+		if(counterBot>max){
+			max = counterBot;
+		}
+		
+
+		if(typeof geoJsonObject !== 'undefined'){
+			geoJsonObject.eachLayer(function(layer){
+	
+				if(layer.feature.properties.name == 'Top Lane'){
+					layer.setStyle({fillColor: getCor(0,max,counterTop)});
+					layer.bindPopup("Top Lane<br>"+counterTop+" game(s)");
+				}
+				if(layer.feature.properties.name == 'Jungle Top Side'){
+					layer.setStyle({fillColor: getCor(0,max,counterJungle)});
+					layer.bindPopup("Jungle Top Side<br>"+counterJungle+" game(s)");
+				}
+				if(layer.feature.properties.name == 'Jungle Bot Side'){
+					layer.setStyle({fillColor: getCor(0,max,counterJungle)});	
+					layer.bindPopup("Jungle Bot Side<br>"+counterJungle+" game(s)");
+				}
+				if(layer.feature.properties.name == 'Mid Lane'){
+					layer.setStyle({fillColor: getCor(0,max,counterMid)});
+					layer.bindPopup("Mid Lane<br>"+counterMid+" game(s)");
+				}
+				if(layer.feature.properties.name == 'Bot Lane'){
+					layer.setStyle({fillColor: getCor(0,max,counterBot)});
+					layer.bindPopup("Bot Lane<br>"+counterBot+" game(s)");
+				}
+			});
+
+		}
+	}
+
 	function filterMatchList(matchlist){
+
+		if(typeof matchlist === 'undefined'){
+			return [];
+		}
 
 		var TOP_INDEX = 0;
 		var JUNGLE_INDEX = 1;
@@ -617,7 +701,8 @@ var summonerModule =(function(){
 
 		updateMatchListChampions(filterMatchList(summonerMatches.matches));
 
-		updateMatchListMap(filterMatchList(summonerMatches.matches));
+		setTimeout(function(){updateMatchListMap(filterMatchList(summonerMatches.matches));}, 3500);
+		//updateMatchListMap(filterMatchList(summonerMatches.matches));
 
 
 	};
