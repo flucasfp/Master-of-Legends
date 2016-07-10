@@ -561,7 +561,7 @@ var summonerModule =(function(){
 
 	function getCor(min,max,atual){
 		var cores = 'Blues';
-		var numBins = 4;
+		var numBins = 5;
 
 		var passo = (max-min)/numBins;
 
