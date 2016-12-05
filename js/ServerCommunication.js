@@ -1,5 +1,5 @@
 var serverCommunication=(function(){
-    var squareChampionImageUrl = "http://ddragon.leagueoflegends.com/cdn/6.12.1/img/champion";
+    var squareChampionImageUrl = "http://ddragon.leagueoflegends.com/cdn/6.23.1/img/champion";
     var squareChampionImageType =".png";
     //var serverURL = "http://localhost:5000/?";
     var serverURL = "http://masteroflegends.pythonanywhere.com/?";
