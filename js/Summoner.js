@@ -9,7 +9,7 @@ var summonerModule =(function(){
 
 	function loadSummonerOverview(){
 		//show summonerIcon	
-		$("#summonerIcon").attr("src","http://ddragon.leagueoflegends.com/cdn/6.23.1/img/profileicon/"+summonerInfo[accessKeySummonerInfo].profileIconId+".png");
+		$("#summonerIcon").attr("src","http://ddragon.leagueoflegends.com/cdn/7.1.1/img/profileicon/"+summonerInfo[accessKeySummonerInfo].profileIconId+".png");
 		//show summonerName
 		$("#summonerName").text(summonerInfo[accessKeySummonerInfo].name);
 		//show summonerRegion
