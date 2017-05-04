@@ -37,3 +37,5 @@ var mainController=(function(){
     return{
     };
 })();
+
+alert("The Riot Games API has changed, not all features of this website may work until the site is updated.")
